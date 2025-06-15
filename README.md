@@ -35,7 +35,7 @@ l
 
 ## 🎀 STEP 02 -  Get Session
 
-<a href="/"><img src="https://img.shields.io/badge/QR%20OR%20PAIR%20CODE-blue" alt="GET SESSION" width="200"></a>
+<a href="https://replit.com/@skylifecommunit/WEB-PAIR-2"><img src="https://img.shields.io/badge/QR%20OR%20PAIR%20CODE-blue" alt="GET SESSION" width="200"></a>
 
 `Not come session id use a vpn and try again`
 
