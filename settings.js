@@ -6,12 +6,12 @@ function convertToBool(text, fault = 'true') {
 
 
 module.exports = {
-SESSION_ID: process.env.SESSION_ID === undefined ? 'CkxD3TCD#grcR1uxPkOdSuwSO_PouyayXwIQ45NT56KM-P-onESk' : process.env.SESSION_ID,
+SESSION_ID: process.env.SESSION_ID === undefined ? 'KxA2GCJD#D8hv5Rhya6vG6M6kyKiOBgho1Gnedu0sKEJlmL_UMwY' : process.env.SESSION_ID,
 OWNER_NUMBER: process.env.OWNER_NUMBER === undefined ? '94766315540' : process.env.OWNER_NUMBER,  
 PREFIX: process.env.PREFIX || '.' ,
 POSTGRESQL_URL: process.env.POSTGRESQL_URL === undefined ? 'postgres://vajiratech_user:oSIFl2xmSojMZ0rkzdd0g0W6msuVTpNN@dpg-cpd7fjv109ks73e5gtig-a.frankfurt-postgres.render.com/vajiratech' : process.env.POSTGRESQL_URL,   
 ALIVE:  process.env.ALIVE  || '> GOJO MD',
-GEMINI_API_KEY:process.env.GEMINI_API_KEY || 'KxA2GCJD#D8hv5Rhya6vG6M6kyKiOBgho1Gnedu0sKEJlmL_UMwY',
+GEMINI_API_KEY:process.env.GEMINI_API_KEY || 'AIzaSyDQIUl78aFtIgsNKY1RUU82nDkL905UbtA',
 AUTO_READ_STATUS: process.env.AUTO_READ_STATUS || "true",
 MODE: process.env.MODE || "public",
 AUTO_VOICE: process.env.AUTO_VOICE || "true",
