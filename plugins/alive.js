@@ -1,64 +1,34 @@
-const { cmd, botpic, Config, tlang,getBuffer, prefix } = require('../lib')
-const hrs = new Date().getHours({ timeZone: 'Asia/Karachi' })
-const get_localized_date = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
-
-//---------------------------------------------------------------------------
+const l = console.log
+const config = require('../settings')
+const { cmd, commands } = require('../lib/command')
 cmd({
-            pattern: "alive",
-            desc: "Show Live Time Of Pakistan",
-            category: "chamimd",
-	          filename: __filename,
-            use: '<group link.>',
-        },
-        async(Void, citel, text,{ isCreator }) => {
-var time = new Date().toLocaleString('HI', { timeZone: 'Asia/Karachi' }).split(' ')[1]
-var date = new Date().toLocaleDateString(get_localized_date)
-var wish = ''
-if (hrs < 12) wish = 'ɢᴏᴏᴅ ᴍᴏʀɴɪɴɢ ⛅'
-if (hrs >= 12 && hrs <= 16) wish = 'ɢᴏᴏᴅ ᴀғᴛᴇʀɴᴏᴏɴ 🌞'
-if (hrs >= 16 && hrs <= 20) wish = 'ɢᴏᴏᴅ ᴇᴠᴇɴɪɴɢ 🌥'
-if (hrs >= 20 && hrs <= 24) wish = 'ɢᴏᴏᴅ ɴɪɢʜᴛ 🌙'
-var am_pm = ''
-if (hrs < 12) am_pm = 'ᴀᴍ'
-if (hrs >= 12 && hrs <= 24) am_pm = 'ᴘᴍ'
-const suhail= [777,0,100,500,1000,999,2021]
-const q = {
-  key: {
-    fromMe: false,
-    participant: "0@s.whatsapp.net",
-    remoteJid: "status@broadcast"
-  },
-  message: {
-        "orderMessage": {
-           "itemCount" : suhail[Math.floor(8*Math.random())],
-           "status": 1,
-           "surface" : 1,
-           "message": `❏ ${Config.botname} ➬ Whatsapp Bot BY @CHAMI`,
-           "orderTitle": "alive",
-           "sellerJid": '9476631554)@s.whatsapp.net' 
-        }
-      }
-}
+    pattern: "alive",
+    alias: "bot",
+    react: "👻",
+    desc: "Check if Gojo bot is online.",
+    category: "main",
+    filename: __filename
+}, async (gojo, mek, m, {
+    from, reply
+}) => {
+    try {
+        // Send image + caption
+        await gojo.sendMessage(from, {
+            image: { url: "https://raw.githubusercontent.com/gojo18888/Photo-video-/refs/heads/main/file_000000003a2861fd8da00091a32a065a.png" },
+            caption: `⚡ GOJO MAX is ALIVE ⚡\n\nSystem Status: ONLINE ✅\nBot Power Level: ∞\n\nCreated & Managed by: sayura\n\nType .menu to explore commands!`
+        }, { quoted: mek });
 
-let timenow =`
-┏╼═╾╼═╾╼═╾╼═╾╼═╾╼═╾❋
-┃↱Cʜᴀᴍɪ ᴍᴅ↲
-┃👋ʜᴇʟʟᴏᴡ ${citel.pushName},
-┣❑*${wish}* 
-┣❑ ɪᴀᴍ ᴄʜᴀᴍɪ
-┣╼═╾╼═╾╼═╾╼═╾╼═╾●
-┣❍ʙᴏᴛ ꜱᴘᴇᴇᴅ: ❲${latensie.toFixed(4)}❳
-┣❍ᴜᴘᴛɪᴍᴇ: ❲${runtime(process.uptime())}❳
-┣❍ᴏᴡɴᴇʀ: ❲ᴄʜᴀᴍᴏᴅ❳
-┣❍ᴛɪᴍᴇ: ❲${time} ${am_pm}❳
-┃
-┃🎩 *_Cʜᴀᴍɪ ᴍᴅ_*🎩
-┃🎭 *_ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴍʀ ᴄʜᴀᴍɪ_*🎭
-┗╼═╾╼═╾╼═╾╼═╾╼═╾╼═╾❋
+        // Send voice message (PTT style)
+        await gojo.sendMessage(from, {
+            audio: {
+                url: "https://github.com/gojo18888/Photo-video-/raw/refs/heads/main/gojo-satoru%20(1).mp3"
+            },
+            mimetype: 'audio/mpeg',
+            ptt: true
+        }, { quoted: mek });
 
-`
-return await Void.sendMessage(citel.chat, { text:timenow }, { quoted : q } )
-  
-  
-})
+    } catch (e) {
+        console.log(e);
+        reply("Error in .alive command:\n" + e);
+    }
+});
