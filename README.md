@@ -1,5 +1,5 @@
 l
-<h1 align="center">GOJO-MD V1</h1>
+<h1 align="center">CHAMI-MD V1</h1>
 
 <img src="https://i.imgur.com/dBaSKWF.gif" height="90" width="100%">
 
@@ -8,14 +8,14 @@ l
 </p>
 <p align="center">
 <a href="https://github.com/VajiraTech">
-    <img src="https://raw.githubusercontent.com/gojo18888/Photo-video-/refs/heads/main/file_000000003a2861fd8da00091a32a065a.png"  width="700px">
+    <img src="https://ik.imagekit.io/rmlbayysp/1749969122942-file_00000000ec3861f5a4689788244d2bc7_uuacggZ5W.png"  width="700px">
 </a>
 <hr>
 
 
 ## 💡 FOLLOW OUR CHANAL
 
-<a href="https://whatsapp.com/channel/0029VbB9tgf4NVih7bqzzf0s"><img src="https://img.shields.io/badge/Join%20Our%20WhatsApp%20Channel-blue" alt="📎 Join Our WhatsApp Channel" width="350"></a>
+<a href="https://whatsapp.com/channel/0029VbAvLMM0Vyc9KfRBrS3i"><img src="https://img.shields.io/badge/Join%20Our%20WhatsApp%20Channel-blue" alt="📎 Join Our WhatsApp Channel" width="350"></a>
 
 <br>
 
@@ -83,9 +83,9 @@ l
 
 
 
-## GOJO MD DEVELOPER 
+## CHAMI MD DEVELOPER 
 
-sayura mihiranga*⏩
+CHAMOD YASHMIKA*⏩
 
 
 
