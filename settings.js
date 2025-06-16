@@ -6,7 +6,7 @@ function convertToBool(text, fault = 'true') {
 
 
 module.exports = {
-SESSION_ID: process.env.SESSION_ID === undefined ? 'KxA2GCJD#D8hv5Rhya6vG6M6kyKiOBgho1Gnedu0sKEJlmL_UMwY' : process.env.SESSION_ID,
+SESSION_ID: process.env.SESSION_ID === undefined ? 'axg1AapB#u2z4yC809tgUl4LbqDD4LMa3wHQlJi8NeUTT2kyu_-s' : process.env.SESSION_ID,
 OWNER_NUMBER: process.env.OWNER_NUMBER === undefined ? '94766315540' : process.env.OWNER_NUMBER,  
 PREFIX: process.env.PREFIX || '.' ,
 POSTGRESQL_URL: process.env.POSTGRESQL_URL === undefined ? 'postgres://vajiratech_user:oSIFl2xmSojMZ0rkzdd0g0W6msuVTpNN@dpg-cpd7fjv109ks73e5gtig-a.frankfurt-postgres.render.com/vajiratech' : process.env.POSTGRESQL_URL,   
