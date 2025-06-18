@@ -8,7 +8,7 @@ l
 </p>
 <p align="center">
 <a href="https://github.com/VajiraTech">
-    <img src="https://ik.imagekit.io/rmlbayysp/1749969122942-file_00000000ec3861f5a4689788244d2bc7_uuacggZ5W.png"  width="700px">
+    <img src="https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg"  width="700px">
 </a>
 <hr>
 
