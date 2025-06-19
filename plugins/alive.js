@@ -15,7 +15,7 @@ cmd({
         // Send image + caption
         await gojo.sendMessage(from, {
             image: { url: "https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg" },
-            caption: `⚡CHAMI-MD   MAX is ALIVE ⚡\n\nSystem Status: ONLINE ✅\nBot Power Level: ∞\n\nCreated & Managed by: sayura\n\nType .menu to explore commands!`
+            caption: `⚡CHAMI-MD   MAX is ALIVE ⚡\n\nSystem Status: ONLINE ✅\nBot Power Level: ∞\n\nCreated & Managed by: chami\n\nType .menu to explore commands!`
         }, { quoted: mek });
 
         // Send voice message (PTT style)
