@@ -143,7 +143,7 @@ async function connectToWA() {
             console.log('Plugins installed ✅')
             console.log('Bot connected ✅')
 await conn.sendMessage(config.OWNER_NUMBER + "@s.whatsapp.net", {
-text: "*👨‍💻 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 👨‍💻 successfully connected* ✓\n\n Use .Update command to see chami md new update news \n\n> ◦ *Official  Chanel* - ```https://chat.whatsapp.com/FE6lHdt6XwGJyGHOH45JAp```\n> ◦ ᴊᴏɪɴ ᴏᴜʀ sᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ ᴠɪᴀ ᴛʏᴘᴇ: .joinsup\n*👨‍💻 CHAMI ᴍᴅ 👨‍💻 ᴡʜᴀᴛꜱᴀᴘᴘ ᴜꜱᴇʀ ʙᴏᴛ*\n*ᴄʀᴇᴀᴛᴇᴅ ʙʏ • chamod yashmika*",
+text: "*👨‍💻 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 👨‍💻 successfully connected* ✓\n\n Use .Update command to see chami md new update news \n\n> ◦ *Official  Chanel* - ```https://whatsapp.com/channel/0029VbAvLMM0Vyc9KfRBrS3i```\n> ◦ ᴊᴏɪɴ ᴏᴜʀ sᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ ᴠɪᴀ ᴛʏᴘᴇ: .joinsup\n*👨‍💻 CHAMI ᴍᴅ 👨‍💻 ᴡʜᴀᴛꜱᴀᴘᴘ ᴜꜱᴇʀ ʙᴏᴛ*\n*ᴄʀᴇᴀᴛᴇᴅ ʙʏ • chamod yashmika*",
 contextInfo: {
 externalAdReply: {
 title: "👨‍💻 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 👨‍💻\nSuccessfully Connected !",	
