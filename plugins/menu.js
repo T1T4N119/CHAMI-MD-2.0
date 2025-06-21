@@ -1,76 +1,109 @@
-const config = require('../settings');
-const { cmd } = require('../lib/command');
-const { runtime } = require('../lib/functions');
+const { readEnv } = require("../lib/database");
+const { cmd, commands } = require("../command");
 
-cmd({
-  pattern: "menu",
-  react: "📜",
-  alias: ["panel", "help"],
-  desc: "Displays the main command menu",
-  category: "main",
-  filename: __filename
-}, async (robin, m, mek, { from, prefix, reply, pushName }) => {
+cmd(
+  {
+    pattern: "menu",
+    react: "📃",
+    alise: ["getmenu"],
+    desc: "get cmd list",
+    category: "main",
+    filename: __filename,
+  },
+  async (
+    robin,
+    mek,
+    m,
+    {
+      from,
+      quoted,
+      body,
+      isCmd,
+      command,
+      args,
+      q,
+      isGroup,
+      sender,
+      senderNumber,
+      botNumber2,
+      botNumber,
+      pushname,
+      isMe,
+      isOwner,
+      groupMetadata,
+      groupName,
+      participants,
+      groupAdmins,
+      isBotAdmins,
+      isAdmins,
+      reply,
+    }
+  ) => {
+    try {
+      const config = await readEnv();
+      let menu = {
+        main: "",
+        download: "",
+        group: "",
+        owner: "",
+        convert: "",
+        search: "",
+      };
 
-  const menuText = `
-╭───────────────◆
-│  👋ʜᴇʟʟᴏᴡ ${citel.pushName},
-│  🤖 *CHAMI MD MENU*
-╰───────────────◆
+      for (let i = 0; i < commands.length; i++) {
+        if (commands[i].pattern && !commands[i].dontAddCommandList) {
+          menu[
+            commands[i].category
+          ] += `${config.PREFIX}${commands[i].pattern}\n`;
+        }
+      }
 
-🧩 *Owner Commands*
-├› ${prefix}mode [public/private]
-├› ${prefix}block @user
-├› ${prefix}unblock @user
-├› ${prefix}ban / unban
+      let madeMenu = `👋 *Hello  ${pushname}*
 
-🛠️ *Download Commands*
-├› ${prefix}video [yt link]
-├› ${prefix}yta [yt link]
-├› ${prefix}slanimeclub [anime name]
-├› ${prefix}film [movie name]
 
-🧠 *Utility Commands*
-├› ${prefix}ping
-├› ${prefix}runtime
-├› ${prefix}script
-├› ${prefix}alive
+| *MAIN COMMANDS* |
+    ▫️.alive
+    ▫️.menu
+    ▫️.ai <text>
+    ▫️.system
+    ▫️.owner
+| *DOWNLOAD COMMANDS* |
+    ▫️.song <text>
+    ▫️.video <text>
+    ▫️.fb <link>
+    ▫️.slanimeclub <anime>
+    ▫️.movie <film>
+| *GROUP COMMANDS* |
+${menu.group}
+| *OWNER COMMANDS* |
+    ▫️.restart
+    ▫️.update
+| *CONVERT COMMANDS* |
+    ▫️.sticker <reply img>
+    ▫️.img <reply sticker>
+    ▫️.tr <lang><text>
+    ▫️.tts <text>
+| *SEARCH COMMANDS* |
+${menu.search}
 
-🖼️ *Group Management*
-├› ${prefix}kick @user
-├› ${prefix}add +94xxxxxxxxx
-├› ${prefix}promote @user
-├› ${prefix}demote @user
-├› ${prefix}gname [name]
-├› ${prefix}gpp [img]
 
-🎨 *Converter*
-├› ${prefix}sticker
-├› ${prefix}photo
-├› ${prefix}mp3
-├› ${prefix}mp4
+🥶𝐌𝐚𝐝𝐞 𝐛𝐲 𝐂𝐇𝐀𝐌𝐈🥶
 
-🔐 *Database Tools*
-├› ${prefix}getcase
-├› ${prefix}savecase
-├› ${prefix}delcase
-
-╭───────────────◆
-│ _🕒 Uptime:_ ${runtime(process.uptime())}
-╰───────────────◆
-  `.trim();
-
-  const buttons = [
-    { buttonId: `${prefix}owner`, buttonText: { displayText: '👤 Owner' }, type: 1 },
-    { buttonId: `${prefix}script`, buttonText: { displayText: '💻 Script' }, type: 1 },
-    { buttonId: `${prefix}ping`, buttonText: { displayText: '📶 Ping' }, type: 1 }
-  ];
-
-  const buttonMessage = {
-    text: menuText,
-    footer: `⚡ CHAMI-MD BOT | Powered by @CHAMI`,
-    buttons: buttons,
-    headerType: 1
-  };
-
-  await robin.sendMessage(from, buttonMessage, { quoted: mek });
-});
+> CHAMI MENU MSG
+`;
+      await robin.sendMessage(
+        from,
+        {
+          image: {
+            url: "https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg",
+          },
+          caption: madeMenu,
+        },
+        { quoted: mek }
+      );
+    } catch (e) {
+      console.log(e);
+      reply(`${e}`);
+    }
+  }
+);
