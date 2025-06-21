@@ -1,8 +1,8 @@
 {
-  "name": "VAJIRA-MD",
-  "description": "VAJIRA-MD has been designed to make things easier and fun while using WhatsApp. 👨‍💻❤️",
+  "name": "CHAMI-MD",
+  "description": "CHAMI-MD has been designed to make things easier and fun while using WhatsApp. 👨‍💻❤️",
   "logo": "https://pomf2.lain.la/f/aqi35mmg.jpg",
-  "keywords": ["vajiramd", "bot", "whatsapp bot", "multi device", "vajira-md"],
+  "keywords": ["chamimd", "bot", "whatsapp bot", "multi device", "chami-md"],
   "success_url": "/",
 
   "env": {
