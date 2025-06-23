@@ -1,7 +1,7 @@
 const config = require('../settings');
 const { cmd } = require('../lib/command');
 const { runtime } = require('../lib/functions');
-
+const imageUrl = 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg';
 cmd({
     pattern: "menu",
     react: "📜",
