@@ -1,10 +1,6 @@
-const config = require('../settings')
-const { cmd, commands } = require('../lib/command')
-const imageUrl = 'https://ik.imagekit.io/rmlbayysp/1749721075168-40839620698a087ce60d5af0f74bc60b_high_Ol-0Mo0GC.webp';
-
-const os = require("os");
+const config = require('../settings');
+const { cmd } = require('../lib/command');
 const { runtime } = require('../lib/functions');
-
 
 cmd({
     pattern: "menu",
