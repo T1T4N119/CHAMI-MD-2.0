@@ -16,7 +16,7 @@ cmd({
     // Search the movie on CineSubz
     const searchRes = await axios.get('https://api.infinityapi.org/cine-search', {
       headers: {
-        'Authorization': 'Bearer Infinity-manoj-x-mizta' // your API key
+        'Authorization': 'https://api.infinityapi.org/cine-direct-dl?url=https://cinesubz.co/api-rwjdzuehbdrwjdzuehbdzjyvxo2bhh0azjyvxo2bhh0auehbdruehbdrwjdzuehbdzjyvxo2bhh0azjyvxo2bhh0auehbdrwjdzuehbwjdzuehbdzjyvxo2bhh0azjyvxo2bhh0a/ordbasrll4/&api=Infinity-manoj-x-mizta' // your API key
       },
       params: {
         query: q
