@@ -122,8 +122,8 @@ cmd({
 
 
 cmd({
-    pattern: "settings2",
-    alias: ["setting2"],
+    pattern: "settings",
+    alias: ["setting"],
     desc: "settings the bot",
     category: "owner",
     react: "⚙",
