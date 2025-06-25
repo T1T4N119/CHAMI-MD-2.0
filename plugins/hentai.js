@@ -1,37 +1,23 @@
-const { cmd } = require('../lib/command');
 const axios = require('axios');
+const { cmd } = require('../lib/command');
 
 cmd({
   pattern: 'hentai',
-  alias: ['nsfwh'],
-  desc: 'Send random Hentai image',
+  desc: 'Send NSFW Hentai Image',
   category: 'nsfw',
   react: '🔞',
-  use: '.hentai',
   filename: __filename
 }, async (conn, m, msg, { from, reply }) => {
   try {
-    // Hentai API
-    const apiKey = 'https://api.infinityapi.org/hentaiinfo?url=https://www.xanimeporn.com/konomi-ja-nai-kedo-mukatsuku-ane-to-aishou-batsugun-ecchi-episode-2-sub-eng/&api=Infinity-manoj-x-mizta'; // මෙතැනට ඔබේ API Key එක දාන්න
-    const response = await axios.get(`https://hmtai.herokuapp.com/api/hmtai/hentai`, {
-      headers: {
-        'Authorization': `Bearer ${apiKey}`
-      }
-    });
-
-    if (!response.data || !response.data.url) {
-      return reply('⚠️ Failed to get image.');
-    }
-
-    const imageUrl = response.data.url;
-
+    const res = await axios.get('https://api.waifu.pics/nsfw/waifu');
+    const url = res.data.url;
+    
     await conn.sendMessage(from, {
-      image: { url: imageUrl },
-      caption: `🔞 *Hentai Image*\n\n> Powered by CHAMI-MD`
+      image: { url },
+      caption: `🔞 *NSFW Hentai*\n> Powered by CHAMI-MD`
     }, { quoted: m });
-
   } catch (err) {
-    console.error(err);
+    console.log("⛔ API Error:", err.response?.data || err.message);
     reply('❌ Error occurred while fetching hentai image.');
   }
 });
