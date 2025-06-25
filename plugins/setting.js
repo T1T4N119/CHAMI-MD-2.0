@@ -1,103 +1,304 @@
-const { cmd } = require('../lib/command');
+const config = require('../settings')
+const { cmd, commands } = require('../lib/command')
+const { getBuffer, fetchJson } = require('../lib/functions')
+const { sizeFormatter } = require('human-readable')
+const { GDriveDl } = require('../lib/gdrive.js')
+
+
+
+// video
+
+cmd({ 
+    pattern: "video1", 
+    alias: ["yt","mp4"], 
+    react: "🎥", 
+    desc: "Download Youtube song", 
+    category: "main", 
+    use: '.song < Yt url or Name >', 
+    filename: __filename 
+}, async (conn, mek, m, { from, prefix, quoted, q, reply }) => { 
+    try { 
+        if (!q) return await reply("Please provide a YouTube URL or song name.");
+        
+        const yt = await ytsearch(q);
+        if (yt.results.length < 1) return reply("No results found!");
+        
+        let yts = yt.results[0];  
+        let apiUrl = `https://api.bwmxmd.online/api/download/ytmp4?apikey=ibraah-help&url=${encodeURIComponent(yts.url)}`;
+        
+        let response = await fetch(apiUrl);
+        let data = await response.json();
+        
+        if (data.status !== 200 || !data.success || !data.result.download_url) {
+            return reply("Failed to fetch the video. Please try again later.");
+        }
+        
+        let ytmsg = `╭━━━〔 *𝐂𝐇𝐀𝐌𝐈-𝐌𝐃* 〕━━━┈⊷
+┇๏ *Title* -  ${yts.title}
+┇๏ *Duration* - ${yts.timestamp}
+┇๏ *Views* -  ${yts.views}
+┇๏ *Author* -  ${yts.author.name}
+┇๏ *Link* -  ${yts.url}
+╰────────────────┈⊷
+
+> 𝐏𝐎𝐖𝐄𝐑𝐃 𝐁𝐘 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 😈`;
+
+        // Send video details
+        await conn.sendMessage(from, { image: { url: data.result.thumbnail || '' }, caption: ytmsg }, { quoted: mek });
+        
+        // Send video file
+        await conn.sendMessage(from, { video: { url: data.result.download_url }, mimetype: "video/mp4" }, { quoted: mek });
+        
+        // Send document file (optional)
+        await conn.sendMessage(from, { 
+            document: { url: data.result.download_url }, 
+            mimetype: "video/mp4", 
+            fileName: `${data.result.title}.mp4`, 
+            caption: `> *${yts.title}*\n> 𝐏𝐎𝐖𝐄𝐑𝐃 𝐁𝐘 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 😈`
+        }, { quoted: mek });
+
+    } catch (e) {
+        console.log(e);
+        reply("An error occurred. Please try again later.");
+    }
+});  
+    
+// play
+
+cmd({ 
+    pattern: "mp3", 
+    alias: ["ytdl1", "song3"], 
+    react: "🎥", 
+    desc: "Download Youtube song", 
+    category: "main", 
+    use: '.song < Yt url or Name >', 
+    filename: __filename 
+}, async (conn, mek, m, { from, prefix, quoted, q, reply }) => { 
+    try { 
+        if (!q) return await reply("Please provide a YouTube URL or song name.");
+        
+        const yt = await ytsearch(q);
+        if (yt.results.length < 1) return reply("No results found!");
+        
+        let yts = yt.results[0];  
+        let apiUrl = `https://apis.davidcyriltech.my.id/download/ytmp4?url=${encodeURIComponent(yts.url)}`;
+        
+        let response = await fetch(apiUrl);
+        let data = await response.json();
+        
+        if (data.status !== 200 || !data.success || !data.result.download_url) {
+            return reply("Failed to fetch the video. Please try again later.");
+        }
+        
+        let ytmsg = `╭━━━〔 *𝐂𝐇𝐀𝐌𝐈-𝐌𝐃* 〕━━━┈⊷
+┇๏ *Title* -  ${yts.title}
+┇๏ *Duration* - ${yts.timestamp}
+┇๏ *Views* -  ${yts.views}
+┇๏ *Author* -  ${yts.author.name}
+┇๏ *Link* -  ${yts.url}
+╰────────────────┈⊷
+
+> 𝐏𝐎𝐖𝐄𝐑𝐃 𝐁𝐘 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 😈`;
+
+        
+        await conn.sendMessage(from, { image: { url: data.result.thumbnail || '' }, caption: ytmsg }, { quoted: mek });
+        
+        
+        await conn.sendMessage(from, { audio: { url: data.result.download_url }, mimetype: "audio/mpeg" }, { quoted: mek });
+        
+        
+        await conn.sendMessage(from, { 
+            document: { url: data.result.download_url }, 
+            mimetype: "audio/mpeg", 
+            fileName: `${yts.title}.mp3`, 
+            caption: `> *${yts.title}*\n> 𝐏𝐎𝐖𝐄𝐑𝐃 𝐁𝐘 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 😈`
+        }, { quoted: mek });
+
+    } catch (e) {
+        console.log(e);
+        reply("An error occurred. Please try again later.");
+    }
+});
+
 
 cmd({
-  pattern: "settings",
-  alias: ["setting"],
-  desc: "Settings the bot",
-  category: "owner",
-  react: "⚙",
-  filename: __filename
-}, async (conn, mek, m, { from, isOwner, quoted, reply }) => {
-  if (!isOwner) return reply("❌ You are not the owner!");
+    pattern: "settings2",
+    alias: ["setting2"],
+    desc: "settings the bot",
+    category: "owner",
+    react: "⚙",
+    filename: __filename
 
-  try {
-    const desc = `⚙️ *CHAMI-MD SETTINGS MENU* ⚙️
 
-🔢 Reply with the number to change the setting:
+},
+async (conn, mek, m, { from, isOwner, quoted, reply }) => {
+    if (!isOwner) return reply("❌ You are not the owner!");
+    try {
+        let desc = `*𝐂𝐇𝐀𝐌𝐈-𝐌ᴅ  𝐒ᴇᴛᴛɪɴɢꜱ......⚙️*
 
-1.1 Public Mode      1.2 Private Mode
-1.3 Group Only       1.4 Inbox Only
 
-2.1 Auto Voice ON    2.2 Auto Voice OFF
+╭══════════════════════○
+┣━ (01) *𝐖ᴏʀᴋ 𝐌ᴏᴅᴇ....🧠👁️*
+> 1.1  Public Work__🫂
+> 1.2  Private Work__❗
+> 1.3  Group Only__👥
+> 1.4  Inbox Only__👤
+╭══════════════════════○
+┣━ (02) *𝐀ᴜᴛᴏ 𝐕ᴏɪᴄᴇ.....🧠👁️*
+> 2.1 Auto Voice __true 🔛
+> 2.2 Auto Voice_ false 📴
+╭══════════════════════○
+┣━ (03) *𝐀ᴜᴛᴏ 𝐒ᴛᴀᴛᴜꜱ 𝐒ᴇᴇɴ.....🧠👁️*
+> 3.1 Auto Read Status __true 🔛
+> 3.2 Auto Read Status_ false 📴
+╭══════════════════════○
+┣━ (04) *𝐀ᴜᴛᴏ 𝐒ᴛɪᴄᴋᴇʀ....🧠👁️*
+> 4.1 Auto sticker __true 🔛
+> 4.2 Auto sticker_ false 📴
+╭══════════════════════○
+┣━ (05) *𝐀ᴜᴛᴏ 𝐑ᴇᴘʟʏ.....🧠👁️*
+> 5.1 Auto reply __true 🔛
+> 5.2 Auto reply_ false 📴
+╭══════════════════════○
+┣━ (06) *𝐁ᴏᴛ 𝐎ɴʟɪɴᴇ / 𝐎ꜰꜰʟɪɴᴇ....🧠👁️*
+> 6.1 Online __true 🔛
+> 6.2 Online_ false 📴
+╭══════════════════════○
+┣━ (07) *𝐌ꜱɢ 𝐑ᴇᴀᴅ....🧠👁️*
+> 7.1 Read Msg __true 🔛
+> 7.2 Read Msg_ false 📴
+╭══════════════════════○
+┣━  (08) *𝐌ꜱɢ 𝐑ᴇᴀᴄᴛ....🧠👁️*
+> 8.1 Auto React __true 🔛
+> 8.2 Auto React _ false 📴
+╭══════════════════════○
+┣━ (09) *𝐀ɴᴛɪ 𝐋ɪɴᴋ.....🧠👁️*
+> 9.1 Anti Link__true 🔛
+> 9.2 Anti Link _ false 📴
+> 9.3 Anti Link + Remove ⛔
+╭══════════════════════○
+┣━ (10) *𝐀ᴜᴛᴏ 𝐒ᴛᴀᴛᴜꜱ 𝐑ᴇᴀᴄᴛ & 𝐑ᴇᴘʟʏ.....🧠👁️*
+> 10. 1 Status React__true 🔛
+> 10. 2 Status React _ false 📴
+> 10. 3 Status Reply__true 🔛
+> 10. 4 Status Reply _ false 📴
+╭══════════════════════○
+┣━ (11) *𝐀i Mode.....🧠👁️*
+> 11.1 Auto Ai __true 🔛
+> 11.2 Auto Ai _ false 📴
+╭══════════════════════○
+𝐀ᴜᴛᴏ 𝐒ᴛᴀᴛᴜꜱ 𝐑ᴘʟ එක වෙනස් කරන්න මෙහෙම කරන්න.....👇
+ 
+.update 𝐀ᴜᴛᴏ_𝐒ᴛᴀᴛᴜꜱ_𝐌ꜱɢ: ඔයාට ඕන 𝐌ᴀɢ එක දාන්න......¿
+╰══════════════════════○
 
-3.1 Auto Read Status ON    3.2 OFF
 
-4.1 Auto Sticker ON  4.2 OFF
+🔢 𝐑ᴇᴘʟʏ 𝐁ᴇʟᴏᴡ 𝐓ʜɪꜱ 𝐍ᴜᴍʙᴇʀ 𝐂ʜᴀɴɢᴇ 𝐓ᴏ 𝐂𝐇𝐀𝐌𝐈 -- 𝐌ᴅ 𝐁ᴏᴛ 𝐂ʜᴀɴɢᴇ 𝐒ᴇᴛᴛɪɴɢ.....❍
 
-5.1 Auto Reply ON    5.2 OFF
+> 𝐏ᴏᴡᴇʀᴅ 𝐁ʏ 𝐂𝐇𝐀𝐌𝐈_𝐌ᴅ......👁️❗`;
 
-6.1 Online True      6.2 False
+        const vv = await conn.sendMessage(from, { image: { url: "https://ik.imagekit.io/rmlbayysp/1749649243760-file_000000006ec061f780dc9bcb7a54e549_McROR3W9c.png"}, caption: desc }, { quoted: mek });
 
-7.1 Read Msg ON      7.2 OFF
+        conn.ev.on('messages.upsert', async (msgUpdate) => {
+            const msg = msgUpdate.messages[0];
+            if (!msg.message || !msg.message.extendedTextMessage) return;
 
-8.1 Auto React ON    8.2 OFF
+            const selectedOption = msg.message.extendedTextMessage.text.trim();
 
-9.1 Anti Link ON     9.2 OFF    9.3 + Remove
+            if (msg.message.extendedTextMessage.contextInfo && msg.message.extendedTextMessage.contextInfo.stanzaId === vv.key.id) {
+                switch (selectedOption) {
+                    case '1.1':
+                        reply(".update MODE:public" );
+                        break;
+                    case '1.2':               
+                        reply(".update MODE:private");
+                        break;
+                    case '1.3':               
+                          reply(".update MODE:group");
+                      break;
+                    case '1.4':     
+                        reply(".update MODE:inbox");
+                      break;
+                    case '2.1':     
+                        reply(".update AUTO_VOICE:true");
+                        break;
+                    case '2.2':     
+                        reply(".update AUTO_VOICE:false");
+                    break;
+                    case '3.1':    
+                        reply(".update AUTO_READ_STATUS:true");
+                    break;
+                    case '3.2':    
+                        reply(".update AUTO_READ_STATUS:false");
+                    break;                    
+                    case '4.1':    
+                        reply(".update AUTO_STICKER:true");
+                    break;
+                    case '4.2':    
+                        reply(".update AUTO_STICKER:false");
+                    break;                                        
+                    case '5.1':    
+                        reply(".update AUTO_REPLY:true");
+                    break;
+                    case '5.2':    
+                        reply(".update AUTO_REPLY:false");
+                    break;                        
+                    case '6.1':    
+                        reply(".update ALLWAYS_OFFLINE:true");
+                    break; 
+                    case '6.2':    
+                        reply(".update ALLWAYS_OFFLINE:false");
+                    break;                       
+                    case '7.1':    
+                        reply(".update READ_MESSAGE:true");
+                    break;
+                    case '7.2':    
+                        reply(".update READ_MESSAGE:false");
+                    break;
+                    case '8.1':    
+                        reply(".update AUTO_REACT:true");
+                    break;
+                    case '8.2':    
+                        reply(".update AUTO_REACT:false");
+                    break;
+                    case '9.1':    
+                        reply(".update ANTI_LINK:true");
+                    break;
+                    case '9.2':   
+                        reply(".update ANTI_LINK:false");
+                    break;
+                    case '9.3':    
+                        reply(".update ANTI_LINK:false");
+                    break;
+                    case '10.1':
+                        reply(".update AUTO_REACT_STATUS:true");
+                    break;
+                    case '10.2':
+                        reply(".update AUTO_REACT_STATUS:fales");
+                    break;
+                    case '10.3':
+                        reply(".update AUTO_STATUS_REPLY:true");
+                    break;
+                    case '10.4':
+                        reply(".update AUTO_STATUS_REPLY:fales");
+                    break;
+                    case '11.1':
+                        reply(".update AUTO_AI: true");
+                    break;
+                     case '11.2':
+                        reply(".update AUTO_AI: fales");
+                    break;
 
-10.1 Status React ON     10.2 OFF
-10.3 Status Reply ON     10.4 OFF
+                    default:
+                        reply("Invalid option. Please select a valid option🔴");
+                }
 
-11.1 Auto AI ON      11.2 OFF
+            }
+        });
 
-*Powered by CHAMI-MD 💚*`;
-
-    const sent = await conn.sendMessage(from, {
-      image: { url: "https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg" },
-      caption: desc
-    }, { quoted: mek });
-
-    const handler = async (msgUpdate) => {
-      const newMsg = msgUpdate.messages[0];
-      if (!newMsg.message?.extendedTextMessage?.text) return;
-      const text = newMsg.message.extendedTextMessage.text.trim();
-      const contextId = newMsg.message.extendedTextMessage.contextInfo?.stanzaId;
-
-      if (contextId !== sent.key.id) return;
-
-      const updates = {
-        '1.1': 'MODE:public',
-        '1.2': 'MODE:private',
-        '1.3': 'MODE:groups',
-        '1.4': 'MODE:inbox',
-        '2.1': 'AUTO_VOICE:true',
-        '2.2': 'AUTO_VOICE:false',
-        '3.1': 'AUTO_READ_STATUS:true',
-        '3.2': 'AUTO_READ_STATUS:false',
-        '4.1': 'AUTO_STICKER:true',
-        '4.2': 'AUTO_STICKER:false',
-        '5.1': 'AUTO_REPLY:true',
-        '5.2': 'AUTO_REPLY:false',
-        '6.1': 'ALLWAYS_OFFLINE:true',
-        '6.2': 'ALLWAYS_OFFLINE:false',
-        '7.1': 'READ_MESSAGE:true',
-        '7.2': 'READ_MESSAGE:false',
-        '8.1': 'AUTO_REACT:true',
-        '8.2': 'AUTO_REACT:false',
-        '9.1': 'ANTI_LINK:true',
-        '9.2': 'ANTI_LINK:false',
-        '9.3': 'ANTI_LINK_REMOVE:true',
-        '10.1': 'AUTO_REACT_STATUS:true',
-        '10.2': 'AUTO_REACT_STATUS:false',
-        '10.3': 'AUTO_STATUS_REPLY:true',
-        '10.4': 'AUTO_STATUS_REPLY:false',
-        '11.1': 'AUTO_AI:true',
-        '11.2': 'AUTO_AI:false'
-      };
-
-      if (updates[text]) {
-        reply(`.update ${updates[text]}`);
-      } else {
-        reply("❌ Invalid option. Please select a valid number.");
-      }
-
-      conn.ev.off('messages.upsert', handler);
-    };
-
-    conn.ev.on('messages.upsert', handler);
-
-  } catch (e) {
-    console.error(e);
-    await conn.sendMessage(from, { react: { text: '❌', key: mek.key } });
-    reply('An error occurred while processing your request.');
-  }
+    } catch (e) {
+        console.error(e);
+        await conn.sendMessage(from, { react: { text: '❌', key: mek.key } })
+        reply('An error occurred while processing your request.');
+    }
 });
