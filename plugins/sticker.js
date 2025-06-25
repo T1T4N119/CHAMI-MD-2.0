@@ -1,49 +1,40 @@
-const { cmd } = require("../command");
-const { Sticker, StickerTypes } = require("wa-sticker-formatter");
-const { downloadMediaMessage } = require("../lib/msg.js");
+const { cmd } = require('../lib/command');
+const { Sticker, StickerTypes } = require('wa-sticker-formatter');
+const { downloadMediaMessage } = require('@whiskeysockets/baileys'); // Or your bot's media download helper
 
-cmd(
-  {
-    pattern: "sticker",
-    alias: ["s", "stick"],
-    desc: "Convert an image or short video to a sticker",
-    category: "utility",
-    filename: __filename,
-  },
-  async (
-    robin,
-    mek,
-    m,
-    {
-      from,
-      quoted,
-      args,
-      reply,
+cmd({
+  pattern: 'sticker',
+  alias: ['stic', 's'],
+  desc: 'Convert image or video to sticker',
+  category: 'converter',
+  react: '✨',
+  use: '.sticker (reply to image/video)',
+  filename: __filename
+}, async (conn, m, msg, { from, reply, quoted }) => {
+  try {
+    const mime = (quoted?.mimetype || '');
+
+    if (!quoted || !/image|video/.test(mime)) {
+      return reply('📌 Please reply to an image or a short video to convert into a sticker.');
     }
-  ) => {
-    try {
-      if (!quoted || !["imageMessage", "videoMessage"].includes(quoted?.mtype)) {
-        return reply("Please reply to an image or short video to convert it to a sticker.");
-      }
 
-      reply("Creating sticker...");
+    const mediaBuffer = await downloadMediaMessage(quoted, 'buffer', {}, {});
 
-      const media = await downloadMediaMessage(quoted, "stickerInput");
-      if (!media) return reply("Failed to download the media. Try again!");
+    const sticker = new Sticker(mediaBuffer, {
+      pack: 'CHAMI-MD',
+      author: 'Chamod Yashmika',
+      type: StickerTypes.FULL, // FULL | CIRCLE | CROPPED
+      quality: 80
+    });
 
-      const sticker = new Sticker(media, {
-        pack: "ᴄʜᴀᴍɪ-ᴍᴅ",
-        author: "ᴄʜᴀᴍɪ-ᴍᴅ",
-        type: StickerTypes.FULL,
-        quality: 50,
-      });
+    const stickerBuffer = await sticker.toBuffer();
 
-      const buffer = await sticker.toBuffer();
-      await robin.sendMessage(from, { sticker: buffer }, { quoted: mek });
+    await conn.sendMessage(from, {
+      sticker: stickerBuffer
+    }, { quoted: m });
 
-    } catch (e) {
-      console.error(e);
-      reply(`Error: ${e.message || e}`);
-    }
+  } catch (err) {
+    console.error(err);
+    reply('❌ Failed to create sticker. Maybe file is too long or unsupported format.');
   }
-);
+});
