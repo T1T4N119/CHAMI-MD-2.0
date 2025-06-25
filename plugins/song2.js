@@ -11,7 +11,7 @@ cmd({
   if (!q) return reply("🔍 Please provide a YouTube link or name.");
 
   try {
-    const api = `https://vihangayt.me/download/ytmp3?q=${encodeURIComponent(q)}`;
+    const api = `let apiUrl = `https://api.bwmxmd.online/api/download/ytmp3?apikey=ibraah-help&url=${encodeURIComponent(yts.url)}`}`;
     const res = await fetch(api);
     const data = await res.json();
 
