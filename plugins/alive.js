@@ -23,7 +23,7 @@ cmd({
         const uptime = moment.duration(process.uptime(), "seconds").humanize();
         const time = moment.tz("Asia/Colombo").format("🕐 HH:mm:ss A");
 
-        const caption = `*👋 Hi Chamod Yashmika*
+        const caption = `*👋 Hello Sin Nombre*
 
 🪄 *I am Alive Now 💗*
 
