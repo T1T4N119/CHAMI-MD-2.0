@@ -197,7 +197,7 @@ async (conn, mek, m, { from, isOwner, quoted, reply }) => {
 
 > 𝐏ᴏᴡᴇʀᴅ 𝐁ʏ 𝐂𝐇𝐀𝐌𝐈_𝐌ᴅ......👁️❗`;
 
-        const vv = await conn.sendMessage(from, { image: { url: "https://ik.imagekit.io/rmlbayysp/1749649243760-file_000000006ec061f780dc9bcb7a54e549_McROR3W9c.png"}, caption: desc }, { quoted: mek });
+        const vv = await conn.sendMessage(from, { image: { url: "https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg"}, caption: desc }, { quoted: mek });
 
         conn.ev.on('messages.upsert', async (msgUpdate) => {
             const msg = msgUpdate.messages[0];
