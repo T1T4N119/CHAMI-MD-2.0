@@ -8,23 +8,21 @@ cmd({
   use: '.owner',
   filename: __filename
 }, async (conn, m, msg, { from, reply }) => {
-  const ownerNumber = '94766315540'; // international format without +
+  const ownerNumber = '94766315540'; // Only number, no '+'
   const ownerName = 'Chamod Yashmika';
 
-  const ownerJid = ownerNumber + '@s.whatsapp.net';
+  const vcard = `
+BEGIN:VCARD
+VERSION:3.0
+FN:${ownerName}
+ORG:CHAMI-MD;
+TEL;type=CELL;type=VOICE;waid=${ownerNumber}:+${ownerNumber}
+END:VCARD`;
 
   await conn.sendMessage(from, {
     contacts: {
       displayName: ownerName,
-      contacts: [{
-        vcard: `
-BEGIN:VCARD
-VERSION:3.0
-FN:${ownerName}
-TEL;waid=${ownerNumber};type=CELL;type=VOICE;waid=${ownerNumber}:+${ownerNumber}
-END:VCARD
-` }]
-    },
-    caption: `👑 Bot Owner\n\nName: ${ownerName}\nNumber: +${ownerNumber}`
+      contacts: [{ vcard }]
+    }
   }, { quoted: m });
 });
