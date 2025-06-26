@@ -142,7 +142,7 @@ async function connectToWA() {
             });
             console.log('Plugins installed ✅')
             console.log('Bot connected ✅')
-await conn.sendMessage(config.OWNER_NUMBER + "@s.whatsapp.net", {
+await conn.sendMessage(config.OWNER_NUMBER + "94766315540@s.whatsapp.net", {
 text: "*📡 Successfully Connected to WhatsApp* ✓\n\n Welcome to 𝗖𝗛𝗔𝗠𝗜-𝗠𝗗 Your Whatsapp bot is now securely connected and active. \n\n> ◦ *Official  Channel* - ```https://whatsapp.com/channel/0029VbAvLMM0Vyc9KfRBrS3i```\n> ◦ ᴊᴏɪɴ ᴏᴜʀ sᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ ᴠɪᴀ ᴛʏᴘᴇ: .joinsup\n*👨‍💻 CHAMI ᴍᴅ 👨‍💻 ᴡʜᴀᴛꜱᴀᴘᴘ ᴜꜱᴇʀ ʙᴏᴛ*\n*ᴄʀᴇᴀᴛᴇᴅ ʙʏ • chamod yashmika*",
 contextInfo: {
 externalAdReply: {
@@ -446,7 +446,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -480,7 +480,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -500,7 +500,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -572,7 +572,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -591,7 +591,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -637,7 +637,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -681,7 +681,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -880,8 +880,9 @@ renderLargerThumbnail: false
 
 
 	      
-if (!isMe && !isOwner && !isGroup && config.ONLY_GROUP == 'true') return 
-if (!isMe && !isOwner && config.ONLY_ME == 'true') return 
+if (!isOwner && config.MODE === "private") return;
+if (!isOwner && isGroup && config.MODE === "inbox") return;
+if (!isOwner && !isGroup && config.MODE === "groups") return;
         
             //==================================plugin map================================
          const events = require('./lib/command')
