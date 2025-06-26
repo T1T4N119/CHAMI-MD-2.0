@@ -347,10 +347,12 @@ await isbtnID(mek.message?.extendedTextMessage?.contextInfo?.stanzaId) &&
 getCmdForCmdId(await getCMDStore(mek.message?.extendedTextMessage?.contextInfo?.stanzaId), mek?.message?.extendedTextMessage?.text)
 ? getCmdForCmdId(await getCMDStore(mek.message?.extendedTextMessage?.contextInfo?.stanzaId), mek?.message?.extendedTextMessage?.text)  : (type === 'extendedTextMessage') ? mek.message.extendedTextMessage.text : (type == 'imageMessage') && mek.message.imageMessage.caption ? mek.message.imageMessage.caption : (type == 'videoMessage') && mek.message.videoMessage.caption ? mek.message.videoMessage.caption : ''   
  
- //==================================================================
+ //============================WorkType======================================
+if (!isOwner && config.MODE === "private") return;
+if (!isOwner && isGroup && config.MODE === "inbox") return;
+if (!isOwner && !isGroup && config.MODE === "groups") return;
 
-
-
+	
 conn.sendPoll = (jid, name = '', values = [], selectableCount = 1) => { return conn.sendMessage(jid, { poll: { name, values, selectableCount }}) }
 	      
  
