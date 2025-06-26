@@ -330,8 +330,7 @@ conn.ev.on('messages.upsert', async (mek) => {
         }
     }
 
-    // ...තව තියෙන code එක මෙතනින් පටන් ගන්න
-})
+	
   }
 }
       try {
