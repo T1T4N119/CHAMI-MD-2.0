@@ -446,7 +446,7 @@ title: '👨‍💻 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749649243760-file_000000006ec061f780dc9bcb7a54e549_McROR3W9c.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -480,7 +480,7 @@ title: '👨‍💻 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749649243760-file_000000006ec061f780dc9bcb7a54e549_McROR3W9c.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -500,7 +500,7 @@ title: '👨‍💻 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749649243760-file_000000006ec061f780dc9bcb7a54e549_McROR3W9c.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -572,7 +572,7 @@ title: '👨‍💻 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749649243760-file_000000006ec061f780dc9bcb7a54e549_McROR3W9c.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -591,7 +591,7 @@ title: '👨‍💻 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749649243760-file_000000006ec061f780dc9bcb7a54e549_McROR3W9c.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -637,7 +637,7 @@ title: '👨‍💻 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749649243760-file_000000006ec061f780dc9bcb7a54e549_McROR3W9c.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -681,7 +681,7 @@ title: '👨‍💻 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749649243760-file_000000006ec061f780dc9bcb7a54e549_McROR3W9c.png' ,
+thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
