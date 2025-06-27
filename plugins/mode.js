@@ -1,6 +1,7 @@
 const { cmd } = require('../lib/command');
 const fs = require('fs');
-const config = require('../settings');
+const path = require('path');
+let config = require('../settings');
 
 cmd({
     pattern: 'update',
@@ -17,7 +18,7 @@ async (conn, m, msg, { q, reply, isOwner }) => {
         'public': 'public',
         'private': 'private',
         'inbox': 'inbox',
-        'group': 'groups', // <- HERE: 'group' maps to 'groups'
+        'group': 'groups'
     };
 
     if (!modeMap[modeInput]) {
@@ -26,14 +27,16 @@ async (conn, m, msg, { q, reply, isOwner }) => {
 
     const newMode = modeMap[modeInput];
 
-    // Update config.MODE
-    config.MODE = newMode;
-
-    // Update settings.js
-    const settingsPath = require.resolve('../settings');
+    // Update settings.js file
+    const settingsPath = path.resolve(__dirname, '../settings.js');
     let file = fs.readFileSync(settingsPath, 'utf8');
+
     const updatedFile = file.replace(/MODE:\s*['"`][^'"`]+['"`]/, `MODE: '${newMode}'`);
     fs.writeFileSync(settingsPath, updatedFile);
+
+    // Clear require cache and reload config
+    delete require.cache[require.resolve('../settings')];
+    config = require('../settings');
 
     reply(`✅ Bot Mode Updated To: *${newMode.toUpperCase()}*`);
 });
