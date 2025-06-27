@@ -1,153 +1,87 @@
-const { cmd, commands } = require('../lib/command');
-const yts = require('yt-search');
-const { fetchJson } = require('../lib/functions');
-function extractYouTubeId(url) {
-//==============please share======================
-    const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/|playlist\?list=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-    const match = url.match(regex);
-    return match ? match[1] : null;
-}
-function convertYouTubeLink(q) {
-//=========================create by mr lakiya=============
-    const videoId = extractYouTubeId(q);
-    if (videoId) {
-        return ` https://www.youtube.com/watch?v=${videoId}`;
+const { cmd } = require('../lib/command'); const { ytsearch } = require('@dark-yasiya/yt-dl.js'); const fetch = require('node-fetch');
+
+// 🎧 .song Command cmd({ pattern: "song2", react: "🎧", desc: "Download YouTube song", category: "download", use: ".song <YouTube URL or Name>", filename: __filename }, async (conn, mek, m, { from, q, reply, prefix }) => { try { if (!q) return reply("🎵 Please provide a YouTube link or song name.");
+
+const yt = await ytsearch(q);
+if (!yt.results || yt.results.length === 0) return reply("❌ No results found!");
+
+const song = yt.results[0];
+const url = song.url;
+const thumb = song.thumbnail;
+
+const caption = `
+
+🎧 Title: ${song.title} ⏱ Duration: ${song.timestamp} 👤 Author: ${song.author.name} 🔗 URL: ${url}
+
+🔘 Select your download format below 👇`;
+
+const selectionList = {
+  title: '🎵 Choose format type',
+  sections: [
+    {
+      title: '👨‍🔧 Download as:',
+      rows: [
+        { title: '🎶 Play MP3', description: 'Audio format', id: `${prefix}mp3play ${url}` },
+        { title: '📂 Document MP3', description: 'As document file', id: `${prefix}mp3doc ${url}` },
+        { title: '💫 Voice Note', description: 'Voice Note (PTT)', id: `${prefix}mp3ptt ${url}` }
+      ]
     }
-    return q;
-}
+  ]
+};
 
-cmd({
-    pattern: "song2",
-    alias: "play1",
-    desc: "song dl.",
-    react: "🎵",
-    category: "download",
-    filename: __filename
-},
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        q = convertYouTubeLink(q);
-        if (!q) return reply("*`Need title or Link`*");
-        const search = await yts(q);
-        const data = search.videos[0];
-        const url = data.url;
-
-        let desc = `
-「🐉CHAMI-MD SONG DL🐉」
-
-┏━❮ SON INFO ❯━
-┃🤖 *ᴛɪᴛʟᴇ : ${data.title}*
-┃📑 *ᴅᴜʀᴀᴛɪᴏɴ :* ${data.timestamp}* .
-┃🔖 *ᴠɪᴇᴡꜱ : ${data.views}*
-┃📟 *ᴜᴘʟᴏᴀᴅ : ${data.ago}*
-
-┗━━━━━━━━━━━━━━𖣔𖣔
-╭━━〔🔢 *REPLY NUMBER*〕━━┈⊷
-┃•1 Download Audio 🎧
-┃•2 Download Document  📁
-┃•3 Download Voice 🎤
-╰──────────────┈⊷
-> MR CHAMI
-`;
-let info = `
-> MR CHAMI
- `;   
-const sentMsg = await conn.sendMessage(from, {
-            image: { url: data.thumbnail},
-            caption: desc,
-  contextInfo: {
-                mentionedJid: ['94760698006@s.whatsapp.net'],
-                groupMentions: [],
-                forwardingScore: 1,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363419906775942@newsletter',
-                    newsletterName: "MR CHAMI",
-                    serverMessageId: 999
-                }
-            }
-     }, {quoted: mek});
-     
-     const messageID = sentMsg.key.id;
-
-        conn.ev.on('messages.upsert', async (messageUpdate) => {
-            const mek = messageUpdate.messages[0];
-            if (!mek.message) return;
-            const messageType = mek.message.conversation || mek.message.extendedTextMessage?.text;
-            const from = mek.key.remoteJid;
-            const sender = mek.key.participant || mek.key.remoteJid;
-
-            const isReplyToSentMsg = mek.message.extendedTextMessage && mek.message.extendedTextMessage.contextInfo.stanzaId === messageID;
-
-            if (isReplyToSentMsg) {
-                if (messageType === '1') {
-                    await conn.sendMessage(from, { react: { text: '📥', key: mek.key } });
-
-                    const down = await fetchJson(`https://lakiya-api-site.vercel.app/download/ytmp3new?url=${url}&type=mp3`);
-                    const lakiDown = down.result.downloadUrl;
-
-                    await conn.sendMessage(from, { react: { text: '📤', key: mek.key } });  
-                    await conn.sendMessage(from, { 
-                        audio: { url: lakiDown }, 
-                        mimetype: "audio/mpeg",
-                        contextInfo: {
-                            externalAdReply: {
-                                title: data.title,
-                                body: data.videoId,
-                                mediaType: 1,
-                                sourceUrl: data.url,
-                                thumbnailUrl: "https://i.ibb.co/21FZMnvR/Whats-App-Image-2025-03-04-at-11-35-19-AM.jpg",
-                                renderLargerThumbnail: true,
-                                showAdAttribution: true
-                            }
-                        }
-                    }, { quoted: mek });
-                    await conn.sendMessage(from, {});
-                
-                } else if (messageType === '2') {
-                    await conn.sendMessage(from, { react: { text: '📥', key: mek.key } });
-
-                    const down = await fetchJson(`https://lakiya-api-site.vercel.app/download/ytmp3new?url=${url}&type=mp3`);
-                    const lakiDown = down.result.downloadUrl;
-
-                    await conn.sendMessage(from, { react: { text: '📤', key: mek.key } });
-                    await conn.sendMessage(from, {
-                        document: { url: lakiDown },
-                        mimetype: "audio/mp3",
-                        fileName: `${data.title}.mp3`,
-                        caption: info
-                    }, { quoted: mek });
-                    await conn.sendMessage(from, {});
-                } else if (messageType === '3') {
-                    await conn.sendMessage(from, { react: { text: '📥', key: mek.key } });
-
-                    const down = await fetchJson(`https://lakiya-api-site.vercel.app/download/ytmp3new?url=${url}&type=mp3`);
-                    const lakiDown = down.result.downloadUrl;
-
-                    await conn.sendMessage(from, { react: { text: '📤', key: mek.key } });  
-                    await conn.sendMessage(from, { 
-                        audio: { url: lakiDown }, 
-                        mimetype: "audio/mpeg",
-                        ptt: "true",
-                        contextInfo: {
-                            externalAdReply: {
-                                title: data.title,
-                                body: data.videoId,
-                                mediaType: 1,
-                                sourceUrl: data.url,
-                                thumbnailUrl: "https://files.catbox.moe/nggx7z.jfif",
-                                renderLargerThumbnail: true,
-                                showAdAttribution: true
-                            }
-                        }
-                    }, { quoted: mek });
-                    await conn.sendMessage(from, {}); 
-                }
-            }
-        });
-        
-    } catch(e) {
-        console.log(e);
-        reply(`${e}`);
+await conn.sendMessage(from, {
+  image: { url: thumb },
+  caption,
+  footer: '𝗖𝗛𝗔𝗠𝗜-𝗠𝗗 🎧 Your personal music assistant',
+  buttons: [
+    {
+      buttonId: 'action',
+      buttonText: { displayText: '📥 Select Format' },
+      type: 4,
+      nativeFlowInfo: {
+        name: 'single_select',
+        paramsJson: JSON.stringify(selectionList),
+      }
     }
-});
+  ],
+  headerType: 1,
+  viewOnce: true
+}, { quoted: mek });
+
+} catch (e) { console.error(e); reply("❌ Error occurred. Try again."); } });
+
+// 📂 .mp3doc (Document download) cmd({ pattern: "mp3doc", filename: __filename }, async (conn, mek, m, { q, from, reply }) => { try { if (!q.startsWith('http')) return reply("❗ Invalid URL."); const res = await fetch(https://apis.davidcyriltech.my.id/youtube/mp3?url=${encodeURIComponent(q)}); const data = await res.json();
+
+if (!data.result?.downloadUrl) return reply("❌ Failed to fetch audio.");
+
+await conn.sendMessage(from, {
+  document: { url: data.result.downloadUrl },
+  mimetype: 'audio/mpeg',
+  fileName: 'CHAMI-MD.mp3'
+}, { quoted: mek });
+
+} catch (e) { console.error(e); reply("❌ Error in document download."); } });
+
+// 🎶 .mp3play (Normal audio) cmd({ pattern: "mp3play", filename: __filename }, async (conn, mek, m, { q, from, reply }) => { try { if (!q.startsWith('http')) return reply("❗ Invalid URL."); const res = await fetch(https://apis.davidcyriltech.my.id/youtube/mp3?url=${encodeURIComponent(q)}); const data = await res.json();
+
+if (!data.result?.downloadUrl) return reply("❌ Failed to fetch audio.");
+
+await conn.sendMessage(from, {
+  audio: { url: data.result.downloadUrl },
+  mimetype: 'audio/mpeg'
+}, { quoted: mek });
+
+} catch (e) { console.error(e); reply("❌ Error in playing audio."); } });
+
+// 💫 .mp3ptt (Voice Note) cmd({ pattern: "mp3ptt", filename: __filename }, async (conn, mek, m, { q, from, reply }) => { try { if (!q.startsWith('http')) return reply("❗ Invalid URL."); const res = await fetch(https://apis.davidcyriltech.my.id/youtube/mp3?url=${encodeURIComponent(q)}); const data = await res.json();
+
+if (!data.result?.downloadUrl) return reply("❌ Failed to fetch audio.");
+
+await conn.sendMessage(from, {
+  audio: { url: data.result.downloadUrl },
+  mimetype: 'audio/mpeg',
+  ptt: true
+}, { quoted: mek });
+
+} catch (e) { console.error(e); reply("❌ Error in voice note."); } });
+
