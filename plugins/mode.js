@@ -1,42 +1,41 @@
-const { cmd } = require('../lib/command');
 const fs = require('fs');
-const path = require('path');
-let config = require('../settings');
+const { cmd } = require('../lib/command');
+const configPath = './settings.js';
 
 cmd({
-    pattern: 'update',
-    desc: 'Change bot mode',
-    category: 'owner',
-    react: '🔁',
-    filename: __filename
-},
-async (conn, m, msg, { q, reply, isOwner }) => {
-    if (!isOwner) return reply("🚫 Only Owner can use this command.");
+  pattern: 'update',
+  desc: 'Update bot settings like MODE: public/private/inbox/group',
+  category: 'owner',
+  use: '.update MODE:public',
+  filename: __filename
+}, async (conn, m, msg, { q, reply, isOwner }) => {
+  if (!isOwner) return reply("❌ Only Owner can use this command.");
+  if (!q || !q.toLowerCase().startsWith("mode:")) {
+    return reply("❌ Invalid usage. Try: `.update MODE:public`");
+  }
 
-    const modeInput = q.toLowerCase().replace("mode:", "").trim();
-    const modeMap = {
-        'public': 'public',
-        'private': 'private',
-        'inbox': 'inbox',
-        'group': 'groups'
-    };
+  const mode = q.split(":")[1]?.trim()?.toLowerCase();
+  const validModes = ["public", "private", "inbox", "group"];
 
-    if (!modeMap[modeInput]) {
-        return reply(`❌ Invalid mode.\n\nValid modes:\n• public\n• private\n• inbox\n• group`);
+  if (!validModes.includes(mode)) {
+    return reply("❗ Invalid MODE. Use one of: public, private, inbox, group");
+  }
+
+  try {
+    let file = fs.readFileSync(configPath, 'utf8');
+    const updated = file.replace(/MODE:\s*['"].*?['"],/, `MODE: '${mode}',`);
+    fs.writeFileSync(configPath, updated);
+
+    reply(`✅ Successfully updated MODE to *${mode.toUpperCase()}*\n🔁 Restarting bot...`);
+
+    // Restart bot
+    if (process.env.pm_id !== undefined) {
+      require('child_process').exec('pm2 restart all');
+    } else {
+      process.exit(0);
     }
-
-    const newMode = modeMap[modeInput];
-
-    // Update settings.js file
-    const settingsPath = path.resolve(__dirname, '../settings.js');
-    let file = fs.readFileSync(settingsPath, 'utf8');
-
-    const updatedFile = file.replace(/MODE:\s*['"`][^'"`]+['"`]/, `MODE: '${newMode}'`);
-    fs.writeFileSync(settingsPath, updatedFile);
-
-    // Clear require cache and reload config
-    delete require.cache[require.resolve('../settings')];
-    config = require('../settings');
-
-    reply(`✅ Bot Mode Updated To: *${newMode.toUpperCase()}*`);
+  } catch (err) {
+    console.error(err);
+    reply("❌ Error updating MODE setting.");
+  }
 });
