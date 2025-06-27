@@ -39,12 +39,17 @@ _Reply with the number to download._`;
     }, { quoted: mek });
 
     const messageId = sent.key.id;
+    const sender = mek.key.participant || mek.key.remoteJid;
 
-    conn.ev.on('messages.upsert', async (msgUpdate) => {
+    // Filtered listener only for replies to this message
+    const handler = async (msgUpdate) => {
       try {
         const msg = msgUpdate.messages[0];
-        if (!msg.message || !msg.message.extendedTextMessage) return;
-        if (msg.message.extendedTextMessage?.contextInfo?.stanzaId !== messageId) return;
+        if (!msg.message?.extendedTextMessage) return;
+        if (msg.key.fromMe) return;
+
+        const repliedTo = msg.message.extendedTextMessage?.contextInfo?.stanzaId;
+        if (repliedTo !== messageId) return;
 
         const selected = msg.message.extendedTextMessage.text.trim();
 
@@ -54,28 +59,48 @@ _Reply with the number to download._`;
 
         if (selected === "1") {
           await conn.sendMessage(from, {
+            react: { text: "🎶", key: msg.key }
+          });
+          await conn.sendMessage(from, {
             audio: { url: dl },
             mimetype: 'audio/mpeg'
           }, { quoted: msg });
+
         } else if (selected === "2") {
+          await conn.sendMessage(from, {
+            react: { text: "📂", key: msg.key }
+          });
           await conn.sendMessage(from, {
             document: { url: dl },
             mimetype: 'audio/mpeg',
             fileName: `${song.title}.mp3`
           }, { quoted: msg });
+
         } else if (selected === "3") {
+          await conn.sendMessage(from, {
+            react: { text: "🎤", key: msg.key }
+          });
           await conn.sendMessage(from, {
             audio: { url: dl },
             mimetype: 'audio/mpeg',
             ptt: true
           }, { quoted: msg });
+
         } else {
-          await conn.sendMessage(from, { text: "❌ Invalid option. Please reply with 1, 2, or 3." }, { quoted: msg });
+          await conn.sendMessage(from, {
+            text: "❌ Invalid option. Please reply with 1, 2, or 3."
+          }, { quoted: msg });
         }
+
+        // Remove listener after first valid response
+        conn.ev.off('messages.upsert', handler);
+
       } catch (err) {
-        console.log(err);
+        console.log("❌ Song reply handler error:", err);
       }
-    });
+    };
+
+    conn.ev.on('messages.upsert', handler);
 
   } catch (e) {
     console.error(e);
