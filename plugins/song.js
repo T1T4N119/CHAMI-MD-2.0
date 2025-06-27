@@ -59,7 +59,7 @@ cmd({
         }
       ],
       headerType: 1,
-      viewOnce: true
+      viewOnce: false
     }, { quoted: mek });
 
   } catch (e) {
