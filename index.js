@@ -322,18 +322,7 @@ conn.ev.on('messages.update', async(mes) => {
 //==================================================================	
 
     conn.ev.on('creds.update', saveCreds)
-
-conn.ev.on('messages.upsert', async (mek) => {
-    if (config.AUTO_READ_STATUS === "true") {
-        if (mek.messages && mek.messages[0]?.key?.remoteJid?.endsWith('@status')) {
-            await conn.readMessages([mek.messages[0].key])
-        }
-    }
-
-    // ...තව තියෙන code එක මෙතනින් පටන් ගන්න
-})
-  }
-}
+    conn.ev.on('messages.upsert', async (mek) => {
       try {
             mek = mek.messages[0]
             if (!mek.message) return
