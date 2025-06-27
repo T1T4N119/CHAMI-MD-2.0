@@ -13,7 +13,7 @@ POSTGRESQL_URL: process.env.POSTGRESQL_URL === undefined ? 'postgres://vajiratec
 ALIVE:  process.env.ALIVE  || '> CHAMI MD',
 GEMINI_API_KEY:process.env.GEMINI_API_KEY || 'AIzaSyDQIUl78aFtIgsNKY1RUU82nDkL905UbtA',
 AUTO_READ_STATUS: process.env.AUTO_READ_STATUS || "true",
-ANTI_DELETE: process.env.ANTI_DELETE === undefined ? false : convertToBool(process.env.ANTI_DELETE, "true"),
+ANTI_DELETE: convertToBool(process.env.ANTI_DELETE) || true,
 MODE: process.env.MODE || "private",
 AUTO_VOICE: process.env.AUTO_VOICE || "true",
 AUTO_STICKER: process.env.AUTO_STICKER || "true",
