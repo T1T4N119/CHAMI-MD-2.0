@@ -25,7 +25,7 @@ cmd({
  
  🔥This is the result of our teams hard work and our Kindom of devil team owns the bots rights and code rights. Therefore, you have no chance to change and submit our bot under any circumstances And 100 Commands And logo, thumbnail,banner Maker Commands Ai Chatbot feathers On Our Bot`;
 
-        let imageUrl = "https://i.ibb.co/HpCN8RtR/7946.jpg";
+        let imageUrl = "https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg";
 
         let vpsOptions = [
         
@@ -66,7 +66,7 @@ cmd({
         conn.sendMessage(m.chat, {
             buttons,
             headerType: 1,
-            viewOnce: true,
+            viewOnce: false,
             caption: teksnya,
             image: { url: imageUrl },
             contextInfo: {
@@ -74,7 +74,7 @@ cmd({
                 forwardingScore: 999,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '@newsletter',
+                    newsletterJid: '120363419906775942@newsletter',
                     newsletterName: `CHAMI💗`,
                     serverMessageId: 143
                 }
