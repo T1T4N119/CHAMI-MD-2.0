@@ -322,6 +322,40 @@ conn.ev.on('messages.update', async(mes) => {
 //==================================================================	
 
     conn.ev.on('creds.update', saveCreds)
+
+conn.ev.on('messages.delete', async (deleted) => {
+    try {
+        if (config.ANTI_DELETE !== "true") return;
+        if (!deleted) return;
+        if (deleted.length < 1) return;
+        if (deleted[0]?.key?.fromMe) return;
+
+        const from = deleted[0].key.remoteJid;
+        const isGroup = from.endsWith("@g.us");
+        const participant = deleted[0].key.participant;
+        const id = deleted[0].key.id;
+
+        if (!from) return;
+
+        const msg = await conn.loadMessage(from, id);
+        if (!msg || msg.message == null) return;
+
+        await conn.sendMessage(from, {
+            text: `🗑️ *Message Deleted by* ${participant.split("@")[0]} \n\n🔄 *Recovered Message:*`,
+            contextInfo: {
+                mentionedJid: [participant],
+            }
+        });
+
+        await conn.sendMessage(from, msg.message, {
+            quoted: msg
+        });
+
+    } catch (err) {
+        console.log("Anti Delete Error:", err);
+    }
+});
+
     conn.ev.on('messages.upsert', async (mek) => {
       try {
             mek = mek.messages[0]
