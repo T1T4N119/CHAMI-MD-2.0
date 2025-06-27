@@ -142,7 +142,7 @@ async function connectToWA() {
             });
             console.log('Plugins installed ✅')
             console.log('Bot connected ✅')
-await conn.sendMessage(config.OWNER_NUMBER + "94766315540@s.whatsapp.net", {
+await conn.sendMessage(config.OWNER_NUMBER + "94766315540", {
 text: "*📡 Successfully Connected to WhatsApp* ✓\n\n Welcome to 𝗖𝗛𝗔𝗠𝗜-𝗠𝗗 Your Whatsapp bot is now securely connected and active. \n\n> ◦ *Official  Channel* - ```https://whatsapp.com/channel/0029VbAvLMM0Vyc9KfRBrS3i```\n> ◦ ᴊᴏɪɴ ᴏᴜʀ sᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ ᴠɪᴀ ᴛʏᴘᴇ: .joinsup\n*👨‍💻 CHAMI ᴍᴅ 👨‍💻 ᴡʜᴀᴛꜱᴀᴘᴘ ᴜꜱᴇʀ ʙᴏᴛ*\n*ᴄʀᴇᴀᴛᴇᴅ ʙʏ • chamod yashmika*",
 contextInfo: {
 externalAdReply: {
@@ -322,40 +322,6 @@ conn.ev.on('messages.update', async(mes) => {
 //==================================================================	
 
     conn.ev.on('creds.update', saveCreds)
-
-conn.ev.on('messages.delete', async (deleted) => {
-    try {
-        if (config.ANTI_DELETE !== "true") return;
-        if (!deleted) return;
-        if (deleted.length < 1) return;
-        if (deleted[0]?.key?.fromMe) return;
-
-        const from = deleted[0].key.remoteJid;
-        const isGroup = from.endsWith("@g.us");
-        const participant = deleted[0].key.participant;
-        const id = deleted[0].key.id;
-
-        if (!from) return;
-
-        const msg = await conn.loadMessage(from, id);
-        if (!msg || msg.message == null) return;
-
-        await conn.sendMessage(from, {
-            text: `🗑️ *Message Deleted by* ${participant.split("@")[0]} \n\n🔄 *Recovered Message:*`,
-            contextInfo: {
-                mentionedJid: [participant],
-            }
-        });
-
-        await conn.sendMessage(from, msg.message, {
-            quoted: msg
-        });
-
-    } catch (err) {
-        console.log("Anti Delete Error:", err);
-    }
-});
-
     conn.ev.on('messages.upsert', async (mek) => {
       try {
             mek = mek.messages[0]
