@@ -27,10 +27,7 @@ const qrcode = require('qrcode-terminal')
 const NodeCache = require('node-cache')
 const util = require('util')
 const mongoose = require('mongoose'); 
-(async () => {
-  const { default: fetch } = await import('node-fetch');
-  globalThis.fetch = fetch;
-})();
+const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const cheerio = require("cheerio")
 var prefix = config.PREFIX
 const news = config.news
@@ -145,7 +142,7 @@ async function connectToWA() {
             });
             console.log('Plugins installed ✅')
             console.log('Bot connected ✅')
-await conn.sendMessage(config.OWNER_NUMBER + "94766315540@s.whatsapp.net", {
+await conn.sendMessage(config.OWNER_NUMBER + "94766315540", {
 text: "*📡 Successfully Connected to WhatsApp* ✓\n\n Welcome to 𝗖𝗛𝗔𝗠𝗜-𝗠𝗗 Your Whatsapp bot is now securely connected and active. \n\n> ◦ *Official  Channel* - ```https://whatsapp.com/channel/0029VbAvLMM0Vyc9KfRBrS3i```\n> ◦ ᴊᴏɪɴ ᴏᴜʀ sᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ ᴠɪᴀ ᴛʏᴘᴇ: .joinsup\n*👨‍💻 CHAMI ᴍᴅ 👨‍💻 ᴡʜᴀᴛꜱᴀᴘᴘ ᴜꜱᴇʀ ʙᴏᴛ*\n*ᴄʀᴇᴀᴛᴇᴅ ʙʏ • chamod yashmika*",
 contextInfo: {
 externalAdReply: {
@@ -326,6 +323,38 @@ conn.ev.on('messages.update', async(mes) => {
 
     conn.ev.on('creds.update', saveCreds)
     conn.ev.on('messages.upsert', async (mek) => {
+  try {
+    mek = mek.messages[0]
+    if (!mek.message) return
+
+    // ✅ Auto Read Status (for story/status view)
+    if (
+      mek.key &&
+      mek.key.remoteJid === "status@broadcast" &&
+      config.AUTO_READ_STATUS === "true"
+    ) {
+      console.log("👀 Reading WhatsApp Status update...");
+      await conn.readMessages([mek.key]);
+    }
+
+    var id_db = require('./lib/id_db')
+    mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
+    const m = sms(conn, mek)
+    var smg = m
+    const type = getContentType(mek.message)
+    const content = JSON.stringify(mek.message)
+    const from = mek.key.remoteJid
+    const quoted = type == 'extendedTextMessage' && mek.message.extendedTextMessage.contextInfo != null
+      ? mek.message.extendedTextMessage.contextInfo.quotedMessage || []
+      : []
+
+    // 👉 Add your message handlers below here
+    require('./lib/handler')(conn, m, smg)
+
+  } catch (e) {
+    console.error("❌ Error in message handler:", e)
+  }
+}); {
       try {
             mek = mek.messages[0]
             if (!mek.message) return
@@ -862,7 +891,7 @@ conn.sendButtonMessage = async (jid, buttons, quoted, opts = {}) => {
 title: config.T_LINE,
 body: config.B_LINE,
 mediaType: 1,
-sourceUrl: config.CHAMI,
+sourceUrl: config.GOJO,
 thumbnailUrl: config.LOGO2 ,
 renderLargerThumbnail: false
 
