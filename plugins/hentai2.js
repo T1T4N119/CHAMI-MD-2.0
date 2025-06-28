@@ -1,45 +1,38 @@
 const { cmd } = require('../lib/command');
-const axios = require('axios');
+const fetch = require('node-fetch');
 
 cmd({
-  pattern: 'hentai2 ?(.*)',
-  desc: 'Download Hentai video from InfinityAPI',
+  pattern: 'hentai2',
+  desc: 'Send random hentai video',
   category: 'nsfw',
-  filename: __filename
-}, async (conn, m, mek, { q, reply }) => {
+  react: '🔞',
+  filename: __filename,
+  nsfw: true, // NSFW check support (if your framework supports it)
+}, async (conn, m, msg, { reply, isGroup, from }) => {
   try {
-    if (!q || !q.startsWith('http')) {
-      return reply(`🧠 *උදාහරණය:*\n.hentai2 https://www.xanimeporn.com/konomi-ja-nai-kedo-mukatsuku-ane-to-aishou-batsugun-ecchi-episode-2-sub-eng/`);
+    // Optional NSFW group check if you use global.db.data.chats
+    if (isGroup && !(global.db?.data?.chats?.[from]?.nsfw)) {
+      return reply("🚫 NSFW content is disabled in this group.\nType: *.enable nsfw*");
     }
 
-    const res = await axios.get('https://api.infinityapi.org/hentaiinfo', {
-      headers: {
-        Authorization: 'Bearer Infinity-manoj-x-mizta'
-      },
-      params: {
-        url: q
-      }
-    });
+    await conn.sendMessage(from, { react: { text: "🔍", key: m.key } });
 
-    const data = res.data;
+    const res = await fetch("https://www.dark-yasiya-api.site/download/henati");
+    const data = await res.json();
 
-    if (!data?.video?.url) {
-      return reply('😥 Video එක හමුවුණේ නෑ.');
+    if (!data || !data.url) {
+      return reply("❌ Couldn't fetch hentai content.");
     }
 
-    const caption = `*🎞️ Title:* ${data.title || 'N/A'}
-*⏱️ Duration:* ${data.duration || 'Unknown'}
-*📅 Released:* ${data.date || 'Unknown'}
-*📥 Quality:* ${data.video.quality || 'HD'}`;
+    await conn.sendMessage(from, {
+      video: { url: data.url },
+      caption: "🔞 *Random Hentai Video*"
+    }, { quoted: m });
 
-    await conn.sendMessage(m.from, {
-      video: { url: data.video.url },
-      mimetype: 'video/mp4',
-      caption
-    }, { quoted: mek });
+    await conn.sendMessage(from, { react: { text: "✅", key: m.key } });
 
-  } catch (err) {
-    console.error(err);
-    return reply('🚫 Error fetching Hentai video.\n\n```' + err.message + '```');
+  } catch (e) {
+    console.error("Hentai plugin error:", e);
+    reply("❌ Error occurred while fetching hentai.");
   }
 });
