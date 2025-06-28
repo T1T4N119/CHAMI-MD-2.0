@@ -244,10 +244,10 @@ async (conn, mek, m, { from, isOwner, quoted, reply }) => {
                         reply(".update AUTO_REPLY:false");
                     break;                        
                     case '6.1':    
-                        reply(".update ALLWAYS_OFFLINE:true");
+                        reply(".alwaysonline:true");
                     break; 
                     case '6.2':    
-                        reply(".update ALLWAYS_OFFLINE:false");
+                        reply(".alwaysonline:false");
                     break;                       
                     case '7.1':    
                         reply(".update READ_MESSAGE:true");
