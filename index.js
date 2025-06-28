@@ -862,7 +862,7 @@ conn.sendButtonMessage = async (jid, buttons, quoted, opts = {}) => {
 title: config.T_LINE,
 body: config.B_LINE,
 mediaType: 1,
-sourceUrl: config.GOJO,
+sourceUrl: config.CHAMI,
 thumbnailUrl: config.LOGO2 ,
 renderLargerThumbnail: false
 
