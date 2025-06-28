@@ -27,7 +27,10 @@ const qrcode = require('qrcode-terminal')
 const NodeCache = require('node-cache')
 const util = require('util')
 const mongoose = require('mongoose'); 
-const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
+(async () => {
+  const { default: fetch } = await import('node-fetch');
+  globalThis.fetch = fetch;
+})();
 const cheerio = require("cheerio")
 var prefix = config.PREFIX
 const news = config.news
