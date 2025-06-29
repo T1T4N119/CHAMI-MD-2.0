@@ -142,7 +142,7 @@ async function connectToWA() {
             });
             console.log('Plugins installed ✅')
             console.log('Bot connected ✅')
-await conn.sendMessage(config.OWNER_NUMBER + "94766315540", {
+await conn.sendMessage(config.OWNER_NUMBER + "94766315540@s.whatsapp.net", {
 text: "*📡 Successfully Connected to WhatsApp* ✓\n\n Welcome to 𝗖𝗛𝗔𝗠𝗜-𝗠𝗗 Your Whatsapp bot is now securely connected and active. \n\n> ◦ *Official  Channel* - ```https://whatsapp.com/channel/0029VbAvLMM0Vyc9KfRBrS3i```\n> ◦ ᴊᴏɪɴ ᴏᴜʀ sᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ ᴠɪᴀ ᴛʏᴘᴇ: .joinsup\n*👨‍💻 CHAMI ᴍᴅ 👨‍💻 ᴡʜᴀᴛꜱᴀᴘᴘ ᴜꜱᴇʀ ʙᴏᴛ*\n*ᴄʀᴇᴀᴛᴇᴅ ʙʏ • chamod yashmika*",
 contextInfo: {
 externalAdReply: {
