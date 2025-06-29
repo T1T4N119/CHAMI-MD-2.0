@@ -1,38 +1,40 @@
 const { cmd } = require('../lib/command');
 const fs = require('fs');
-const configPath = './settings';
+const config = require('../settings');
 
 cmd({
-  pattern: "update",
-  desc: "Update config values (like MODE, AUTO_READ_STATUS)",
-  category: "owner",
-  use: ".update MODE:public",
-  filename: __filename
+  pattern: 'update',
+  desc: 'Change bot config like MODE',
+  category: 'owner',
+  filename: __filename,
+  use: '.update MODE:public'
 }, async (conn, m, msg, { q, reply, isOwner }) => {
-  if (!isOwner) return reply("❌ Only owner can use this command!");
-
-  if (!q || !q.includes(':')) return reply("⚠️ Invalid format!\nUse: `.update MODE:public`");
-
-  const [keyRaw, ...rest] = q.split(':');
-  const key = keyRaw.trim().toUpperCase();
-  const value = rest.join(':').trim();
-
   try {
-    if (!fs.existsSync(configPath)) return reply("❌ settings.js file not found.");
+    if (!isOwner) return reply('❌ Only owner can use this command!');
+    const [key, value] = q.split(':');
+    if (!key || !value) return reply("⚠️ Invalid format!\nUse: `.update MODE:public`");
 
-    let content = fs.readFileSync(configPath, 'utf-8');
-    const regex = new RegExp(`(${key}\\s*=\\s*["'])([^"']*)(["'])`);
-    const match = content.match(regex);
+    const upperKey = key.trim().toUpperCase();
+    const lowerValue = value.trim().toLowerCase();
 
-    if (!match) return reply(`❌ Setting "${key}" not found in settings.js`);
+    if (upperKey !== "MODE") return reply("⚠️ Only `MODE` update is supported now.");
 
-    const newLine = `${match[1]}${value}${match[3]}`;
-    content = content.replace(regex, newLine);
+    if (!["public", "private", "inbox", "group"].includes(lowerValue)) {
+      return reply("⚠️ Invalid MODE!\nAvailable: public, private, inbox, group");
+    }
 
-    fs.writeFileSync(configPath, content);
-    return reply(`✅ Updated \`${key}\` to \`${value}\` successfully!\n\n📌 Restart bot to apply.`);
-  } catch (err) {
-    console.error(err);
-    reply("❌ Failed to update. Check console logs.");
+    config.MODE = lowerValue;
+
+    // write to file
+    const filePath = require.resolve('../settings.js');
+    const settingsText = fs.readFileSync(filePath, 'utf8');
+    const updatedText = settingsText.replace(/MODE\s*:\s*['"`](.*?)['"`]/, `MODE: "${lowerValue}"`);
+    fs.writeFileSync(filePath, updatedText);
+
+    reply(`✅ MODE updated to: *${lowerValue.toUpperCase()}*\n\nRestart bot to apply changes!`);
+
+  } catch (e) {
+    console.error(e);
+    reply('❌ Failed to update.');
   }
 });
