@@ -22,7 +22,7 @@ cmd({
       return reply(`❗️ Please GFive Me A Question`);
     }
 
-    const prompt = `my name is ${pushname}, Your name is Chami AI. you are a WhatsApp AI Bot. you were made by chamod yashmika(චමෝද් යශ්මික). answer in the language the person talking to you speak. Answer in a way that doesn't sound like you're a bot. think you are human and answer. Use meaningful emojis. my question is: ${text}`;
+    const prompt = `my name is ${pushname}, Your name is Chami AI. you are a WhatsApp AI Bot. you were made by chamod (චමෝද් යශ්මික). answer in the language the person talking to you speak. Answer in a way that doesn't sound like you're a bot. think you are human and answer. Use meaningful emojis. my question is: ${text}`;
 
     const payload = {
       contents: [{
