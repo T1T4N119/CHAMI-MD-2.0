@@ -1,34 +1,38 @@
 const { cmd } = require('../lib/command');
 const fs = require('fs');
-const configPath = './settings.js';
+const configPath = './settings';
 
 cmd({
   pattern: "update",
-  desc: "Update config settings via chat",
+  desc: "Update config values (like MODE, AUTO_READ_STATUS)",
   category: "owner",
   use: ".update MODE:public",
   filename: __filename
 }, async (conn, m, msg, { q, reply, isOwner }) => {
-  if (!isOwner) return reply("❌ Only the owner can update settings!");
+  if (!isOwner) return reply("❌ Only owner can use this command!");
+
   if (!q || !q.includes(':')) return reply("⚠️ Invalid format!\nUse: `.update MODE:public`");
 
-  const [keyRaw, valueRaw] = q.split(':');
+  const [keyRaw, ...rest] = q.split(':');
   const key = keyRaw.trim().toUpperCase();
-  const value = valueRaw.trim();
+  const value = rest.join(':').trim();
 
   try {
-    let settings = fs.readFileSync(configPath, 'utf-8');
+    if (!fs.existsSync(configPath)) return reply("❌ settings.js file not found.");
 
-    const regex = new RegExp(`${key}\\s*=\\s*["'].*?["']`);
-    if (!regex.test(settings)) return reply(`⚠️ Setting key \`${key}\` not found in settings.js`);
+    let content = fs.readFileSync(configPath, 'utf-8');
+    const regex = new RegExp(`(${key}\\s*=\\s*["'])([^"']*)(["'])`);
+    const match = content.match(regex);
 
-    const updatedLine = `${key} = "${value}"`;
-    settings = settings.replace(regex, updatedLine);
-    fs.writeFileSync(configPath, settings);
+    if (!match) return reply(`❌ Setting "${key}" not found in settings.js`);
 
-    reply(`✅ Successfully updated \`${key}\` to \`${value}\``);
-  } catch (e) {
-    console.error(e);
-    reply("❌ Failed to update settings.");
+    const newLine = `${match[1]}${value}${match[3]}`;
+    content = content.replace(regex, newLine);
+
+    fs.writeFileSync(configPath, content);
+    return reply(`✅ Updated \`${key}\` to \`${value}\` successfully!\n\n📌 Restart bot to apply.`);
+  } catch (err) {
+    console.error(err);
+    reply("❌ Failed to update. Check console logs.");
   }
 });
