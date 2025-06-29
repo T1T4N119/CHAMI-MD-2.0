@@ -40,7 +40,7 @@ async (conn, mek, m, { from, quoted, pushname, reply }) => {
 
 await conn.sendMessage(from, {
         video: {
-            url: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chamimd.mp4=true'
+            url: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chamimd.mp4'
         },
         mimetype: 'video/mp4',
         ptv: true
