@@ -1,41 +1,34 @@
-const fs = require('fs');
 const { cmd } = require('../lib/command');
+const fs = require('fs');
 const configPath = './settings.js';
 
 cmd({
-  pattern: 'update',
-  desc: 'Update bot settings like MODE: public/private/inbox/group',
-  category: 'owner',
-  use: '.update MODE:public',
+  pattern: "update",
+  desc: "Update config settings via chat",
+  category: "owner",
+  use: ".update MODE:public",
   filename: __filename
 }, async (conn, m, msg, { q, reply, isOwner }) => {
-  if (!isOwner) return reply("❌ Only Owner can use this command.");
-  if (!q || !q.toLowerCase().startsWith("mode:")) {
-    return reply("❌ Invalid usage. Try: `.update MODE:public`");
-  }
+  if (!isOwner) return reply("❌ Only the owner can update settings!");
+  if (!q || !q.includes(':')) return reply("⚠️ Invalid format!\nUse: `.update MODE:public`");
 
-  const mode = q.split(":")[1]?.trim()?.toLowerCase();
-  const validModes = ["public", "private", "inbox", "group"];
-
-  if (!validModes.includes(mode)) {
-    return reply("❗ Invalid MODE. Use one of: public, private, inbox, group");
-  }
+  const [keyRaw, valueRaw] = q.split(':');
+  const key = keyRaw.trim().toUpperCase();
+  const value = valueRaw.trim();
 
   try {
-    let file = fs.readFileSync(configPath, 'utf8');
-    const updated = file.replace(/MODE:\s*['"].*?['"],/, `MODE: '${mode}',`);
-    fs.writeFileSync(configPath, updated);
+    let settings = fs.readFileSync(configPath, 'utf-8');
 
-    reply(`✅ Successfully updated MODE to *${mode.toUpperCase()}*\n🔁 Restarting bot...`);
+    const regex = new RegExp(`${key}\\s*=\\s*["'].*?["']`);
+    if (!regex.test(settings)) return reply(`⚠️ Setting key \`${key}\` not found in settings.js`);
 
-    // Restart bot
-    if (process.env.pm_id !== undefined) {
-      require('child_process').exec('pm2 restart all');
-    } else {
-      process.exit(0);
-    }
-  } catch (err) {
-    console.error(err);
-    reply("❌ Error updating MODE setting.");
+    const updatedLine = `${key} = "${value}"`;
+    settings = settings.replace(regex, updatedLine);
+    fs.writeFileSync(configPath, settings);
+
+    reply(`✅ Successfully updated \`${key}\` to \`${value}\``);
+  } catch (e) {
+    console.error(e);
+    reply("❌ Failed to update settings.");
   }
 });
