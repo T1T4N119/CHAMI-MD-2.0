@@ -1,46 +1,21 @@
 const { cmd } = require('../lib/command');
-const axios = require('axios');
+const { exec } = require('child_process');
 
 cmd({
-  pattern: 'ytinfo ?(.*)',
-  desc: 'Get YouTube video info using InfinityAPI',
-  category: 'downloader',
+  pattern: "restart",
+  desc: "Restart the bot",
+  category: "owner",
   filename: __filename
-}, async (conn, m, mek, { q, reply }) => {
-  try {
-    if (!q || !q.includes('http')) {
-      return reply(`🔎 කරුණාකර valid YouTube link එකක් යවන්න.\n\n*උදා: .ytinfo https://youtu.be/dQw4w9WgXcQ*`);
+}, async (m) => {
+  if (!m.isOwner) return m.reply("❌ Only the owner can restart the bot.");
+
+  await m.reply("♻️ Restarting CHAMI-MD bot...");
+
+  exec('pm2 restart CHAMI', (err, stdout, stderr) => {
+    if (err) {
+      console.error('Restart error:', stderr);
+      return;
     }
-
-    const res = await axios.get('https://api.infinityapi.org/youtubeInfo', {
-      headers: {
-        'Authorization': 'Bearer Infinity-manoj-x-mizta'
-      },
-      params: {
-        url: q
-      }
-    });
-
-    const data = res.data;
-
-    if (!data || !data.title) {
-      return reply('⚠️ විස්තර ලබාගත නොහැකි විය!');
-    }
-
-    const caption = `*🎬 Title:* ${data.title}
-*👤 Channel:* ${data.channel}
-*⏱ Duration:* ${data.duration}
-*📅 Published:* ${data.uploadDate}
-*👁 Views:* ${data.views}
-*🔗 URL:* ${q}`;
-
-    await conn.sendMessage(m.from, {
-      image: { url: data.thumbnail },
-      caption
-    }, { quoted: mek });
-
-  } catch (error) {
-    console.error(error);
-    reply('🚫 දෝෂයක් ඇතිවුණා!\n\n```' + error.message + '```');
-  }
+    console.log('Bot restarted:\n', stdout);
+  });
 });
