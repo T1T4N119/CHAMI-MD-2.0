@@ -1,4 +1,4 @@
-const { cmd, commands } = require('../command');
+const { cmd, commands } = require('../lib/command');
 const yts = require('yt-search');
 const { fetchJson } = require('../lib/functions');
 function extractYouTubeId(url) {
