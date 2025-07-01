@@ -3,7 +3,7 @@ const { downloadMediaMessage } = require("../lib/msg.js");
 
 cmd({
   pattern: "toimg",
-  alias: ["img", "photo"],
+  alias: ["ti", "tophoto"],
   desc: "Convert sticker to image",
   category: "utility",
   filename: __filename,
