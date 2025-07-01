@@ -1,6 +1,6 @@
-const { cmd, commands } = require("../command");
-const { Sticker, StickerTypes } = require("");
-const { downloadMediaMessage } = require("../lib/msg.js"); // Adjust the path as needed
+const { cmd, commands } = require("../lib/command");
+const { Sticker, StickerTypes } = require("wa-sticker-formatter");
+const { downloadMediaMessage } = require("../lib/msg.js");
 
 cmd(
   {
@@ -17,46 +17,22 @@ cmd(
     {
       from,
       quoted,
-      body,
-      isCmd,
-      command,
-      args,
-      q,
-      isGroup,
-      sender,
-      senderNumber,
-      botNumber2,
-      botNumber,
-      pushname,
-      isMe,
-      isOwner,
-      groupMetadata,
-      groupName,
-      participants,
-      groupAdmins,
-      isBotAdmins,
-      isAdmins,
       reply,
     }
   ) => {
     try {
-      // Ensure the message contains an image or video to convert to a sticker
       if (!quoted || !(quoted.imageMessage || quoted.videoMessage)) {
-        return reply(
-          "Please reply to an image or video to convert it to a sticker."
-        );
+        return reply("🖼️ Please reply to an image or video to convert it to a sticker.");
       }
 
-      // Download the media from the quoted message
       const media = await downloadMediaMessage(quoted, "stickerInput");
-      if (!media) return reply("Failed to download the media. Try again!");
+      if (!media) return reply("❌ Failed to download media. Try again!");
 
-      // Create the sticker from the media
       const sticker = new Sticker(media, {
-        pack: "𝗖_𝗛_𝗔_𝗠_𝗜", // Sticker pack name
-        author: "𝗖𝗛𝗔𝗠𝗢𝗗", // Sticker author name
-        type: StickerTypes.FULL, // Sticker type (FULL or CROPPED)
-        quality: 50, // Quality of the output sticker (0–100)
+        pack: "𝗖_𝗛_𝗔_𝗠_𝗜",
+        author: "𝗖𝗛𝗔𝗠𝗢𝗗",
+        type: StickerTypes.FULL,
+        quality: 50,
       });
 
       const buffer = await sticker.toBuffer();
