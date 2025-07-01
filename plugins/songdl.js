@@ -1,4 +1,3 @@
-
 const { cmd, commands } = require('../command');
 const yts = require('yt-search');
 const { fetchJson } = require('../lib/functions');
@@ -152,4 +151,4 @@ const sentMsg = await conn.sendMessage(from, {
     }
 });
 
-> 𝛲𝛩𝑊𝛯𝑅𝐷 𝐵𝑌 𝐿𝛥𝛫𝛪𝑌𝛥 𝛭𝐷
+
