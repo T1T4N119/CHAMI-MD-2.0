@@ -54,7 +54,7 @@ var { updateCMDStore,isbtnID,getCMDStore,getCmdForCmdId,connectdb,input,get,updb
 var { get_set , input_set } = require('./lib/set_db')        
 const axios = require('axios')
  function genMsgId() {
-  const lt = 'ChamiTech';
+  const lt = 'GojoTech';
   const prefix = "3EB";
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let randomText = prefix;
@@ -142,12 +142,12 @@ async function connectToWA() {
             });
             console.log('Plugins installed ✅')
             console.log('Bot connected ✅')
-await conn.sendMessage(config.OWNER_NUMBER + "94766315540@s.whatsapp.net", {
-text: "*📡 Successfully Connected to WhatsApp* ✓\n\n Welcome to 𝗖𝗛𝗔𝗠𝗜-𝗠𝗗 Your Whatsapp bot is now securely connected and active. \n\n> ◦ *Official  Channel* - ```https://whatsapp.com/channel/0029VbAvLMM0Vyc9KfRBrS3i```\n> ◦ ᴊᴏɪɴ ᴏᴜʀ sᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ ᴠɪᴀ ᴛʏᴘᴇ: .joinsup\n*👨‍💻 CHAMI ᴍᴅ 👨‍💻 ᴡʜᴀᴛꜱᴀᴘᴘ ᴜꜱᴇʀ ʙᴏᴛ*\n*ᴄʀᴇᴀᴛᴇᴅ ʙʏ • chamod yashmika*",
+await conn.sendMessage(config.OWNER_NUMBER + "@s.whatsapp.net", {
+text: "*👨‍💻 CHAMI MD 👨‍💻 successfully connected* ✓\n\n Use .Update command to see CHAMI md new update news \n\n> ◦ *Official  Chanel* - ```https://whatsapp.com/channel/0029VbAvLMM0Vyc9KfRBrS3i```\n> ◦ ᴊᴏɪɴ ᴏᴜʀ sᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ ᴠɪᴀ ᴛʏᴘᴇ: .joinsup\n*👨‍💻 CHAMI ᴍᴅ 👨‍💻 ᴡʜᴀᴛꜱᴀᴘᴘ ᴜꜱᴇʀ ʙᴏᴛ*\n*ᴄʀᴇᴀᴛᴇᴅ ʙʏ • chamod yashmika*",
 contextInfo: {
 externalAdReply: {
 title: "👨‍💻 CHAMI MD 👨‍💻\nSuccessfully Connected !",	
-thumbnailUrl: "https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg",
+thumbnailUrl: "https://raw.githubusercontent.com/sayura19/Helper/refs/heads/main/file_00000000d0dc61f597f450261ecfe33f%20(1).png",
 sourceUrl: "",
 mediaType: 1,
 renderLargerThumbnail: true
@@ -387,7 +387,7 @@ q = args.join(' ')
 	    const isownbot = ownbot?.includes(senderNumber)
             const chami = '94766315540'
             const ischami = chami?.includes(senderNumber)
-	    const developers = '94766315540'
+	    const developers = '94743826406'
             const isbot = botNumber.includes(senderNumber)
 	    const isdev = developers.includes(senderNumber) 	    
             let epaneda =  ''
@@ -446,7 +446,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
+thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -480,7 +480,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
+thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -500,7 +500,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
+thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -572,7 +572,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
+thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -591,7 +591,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
+thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -637,7 +637,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
+thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -681,7 +681,7 @@ title: '👨‍💻 CHAMI - ＭＤ 👨‍💻',
 body: 'ᴀ ꜱɪᴍᴘʟᴇ ᴡʜᴀᴛꜱᴀᴘᴘ ʙᴏᴛ',
 mediaType: 1,
 sourceUrl: "https://wa.me/94766315540" ,
-thumbnailUrl: 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' ,
+thumbnailUrl: 'https://ik.imagekit.io/rmlbayysp/1749548964519-file_00000000c08c61f89a43d885ef3bb804_heNuQdgN0d.png' ,
 renderLargerThumbnail: false,
 showAdAttribution: true
 }
@@ -882,8 +882,7 @@ renderLargerThumbnail: false
 	      
 if (!isOwner && config.MODE === "private") return;
 if (!isOwner && isGroup && config.MODE === "inbox") return;
-if (!isOwner && !isGroup && config.MODE === "groups") return;
-        
+if (!isOwner && !isGroup && config.MODE === "groups") return;        
             //==================================plugin map================================
          const events = require('./lib/command')
 const cmdName = isCmd ?  command : false;
