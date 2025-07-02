@@ -324,7 +324,16 @@ conn.ev.on('messages.update', async(mes) => {
     conn.ev.on('creds.update', saveCreds)
     conn.ev.on('messages.upsert', async (mek) => {
       try {
-            mek = mek.messages[0]
+    const { AntiDelete } = require('./lib/antidel'); // or './lib/antidelete-handler' based on file name
+
+    conn.ev.on('messages.delete', async (updates) => {
+  try {
+    await AntiDelete(conn, updates);
+  } catch (err) {
+    console.error("AntiDelete Error:", err);
+  }
+});     
+	    mek = mek.messages[0]
             if (!mek.message) return
 	    var id_db = require('./lib/id_db')    
             mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
