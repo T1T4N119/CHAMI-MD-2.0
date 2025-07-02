@@ -1,47 +1,45 @@
-const { cmd } = require('../lib/command');
-const axios = require('axios');
-const cheerio = require('cheerio');
+const { cmd } = require('../lib/command')
+const axios = require('axios')
+const cheerio = require('cheerio')
+const { sendFileFromUrl } = require('../lib')
 
 cmd({
   pattern: "modapk",
-  alias: ["apkmod", "modapp"],
-  desc: "Search and get Mod APK from moddroid.com",
-  category: "download",
-  filename: __filename,
-}, async (conn, m, msg, { q, reply }) => {
-  if (!q) return reply("🔍 Please provide an app name.\n\nExample: `.modapk Spotify`");
+  desc: "Download APK/Mod from APKPure",
+  category: "downloader",
+  use: ".modapk <app name>",
+  react: '📦'
+}, async (m, text) => {
+  if (!text) return m.reply('🔍 *Please enter app name.*\nExample: *.modapk subway surfers*')
 
   try {
-    reply("⏳ Searching moddroid.com...");
+    const searchUrl = `https://apkpure.com/search?q=${encodeURIComponent(text)}`
+    const res = await axios.get(searchUrl)
+    const $ = cheerio.load(res.data)
+    const firstResult = $('p.title > a').first()
 
-    const searchURL = `https://moddroid.com/?s=${encodeURIComponent(q)}`;
-    const { data } = await axios.get(searchURL);
-    const $ = cheerio.load(data);
+    if (!firstResult.attr('href')) return m.reply('❌ App not found.')
 
-    const firstResult = $(".posts.clearfix > li").first();
+    const appPage = `https://apkpure.com${firstResult.attr('href')}`
+    const appRes = await axios.get(appPage)
+    const $$ = cheerio.load(appRes.data)
 
-    if (!firstResult || firstResult.length === 0) return reply("❌ No mod apk found.");
+    const downloadBtn = $$('a.da').attr('href')
+    const appName = $$('h1').text().trim()
+    const icon = $$('img[itemprop="image"]').attr('src')
+    const desc = $$('div.description').text().trim()
 
-    const title = firstResult.find("h2").text().trim();
-    const link = firstResult.find("a").attr("href");
-    const img = firstResult.find("img").attr("src");
+    if (!downloadBtn) return m.reply('❌ Failed to get download link.')
 
-    // Get download page
-    const apkPage = await axios.get(link);
-    const _$ = cheerio.load(apkPage.data);
-    const dlBtn = _$(".download-btn a").first().attr("href") || "🔗 Visit link manually.";
+    await m.reply(`✅ *Found:* ${appName}\n📥 *Downloading...*`)
 
-    let caption = `*📱 App Name:* ${title}\n`;
-    caption += `*🌐 Source:* moddroid.com\n`;
-    caption += `*📥 Download:* ${dlBtn}\n`;
-
-    await conn.sendMessage(msg.from, {
-      image: { url: img },
-      caption,
-    }, { quoted: m });
+    await sendFileFromUrl(m.chat, downloadBtn, m, {
+      filename: `${appName}.apk`,
+      caption: `📱 *${appName}*\n\n📝 ${desc}`
+    }, { thumbnail: icon })
 
   } catch (e) {
-    console.log(e);
-    reply("❌ Failed to fetch mod apk. Try again later.");
+    console.error(e)
+    m.reply('❌ Error fetching app. Please try a different name.')
   }
-});
+})
