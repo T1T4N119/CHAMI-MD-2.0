@@ -1,79 +1,119 @@
-const { cmd } = require('../lib/command');
-const fetch = require('node-fetch');
+const { cmd, commands } = require('../command');
+const { fetchJson } = require('../functions');
 
 cmd({
-  pattern: 'tiktok',
-  alias: ['tt'],
-  desc: 'Download TikTok Video',
-  category: 'downloader',
-  use: '.tiktok <link>',
+  pattern: "tiktok",
+  alias: ['tt', 'ttdown'],
+  react: "🎥",
+  desc: "Download For Tiktok Videos",
+  category: "download",
   filename: __filename
-}, async (conn, mek, m, { from, reply, q }) => {
+}, async (bot, message, args, { from, quoted, reply, q }) => {
   try {
-    if (!q) return reply("❌ කරුණාකර TikTok ලින්ක් එකක් ලබා දෙන්න.");
-
-    const res = await fetch(`https://api.dapuhy.xyz/downloader/tiktok?url=${encodeURIComponent(q)}&apikey=trial`);
-    const data = await res.json();
-
-    if (!data || !data.data || !data.data.nowatermark) {
-      return reply("❌ Error: TikTok වීඩියෝව download කිරීම අසාර්ථකයි.");
+    if (!q) {
+      return await reply("Please provide a TikTok URL.");
+    }
+    
+    if (!q.includes('tiktok.com')) {
+      return await reply("This URL is invalid.");
     }
 
-    let cap = `╭──❒ *TikTok Downloader*
-│👤 Author: ${data.data.author.nickname || 'Unknown'}
-│🎵 Music: ${data.data.music.title || 'N/A'}
-│💬 Description: ${data.data.description || 'No caption'}
-│🔗 Source: ${data.data.play || q}
-╰───────────────⊷
-> *Powered By CHAMI-MD 😈*`;
+    const contextInfo = {
+      forwardingScore: 1,
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+        newsletterName: "𝐌𝐑 𝐂𝐇𝐀𝐌𝐈",
+        newsletterJid: "120363419906775942@newsletter"
+      }
+      
+    };
 
-    await conn.sendMessage(from, {
-      image: { url: data.data.cover || data.data.thumbnail },
-      caption: `${cap}\n\n🎬 *Select a format to download:*
+    const apiResponse = await fetchJson(`https://api.agatz.xyz/api/tiktok?url=${q}`);
 
-1️⃣ No Watermark (HD)
-2️⃣ Watermark Version
-3️⃣ Audio Only (MP3)
+    const downloadMessage = `
+*𝐓𝐈𝐊𝐓𝐎𝐊 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃*
+    
+*TITLE :* ${apiResponse.data.title}
+*Author :* ${apiResponse.data.author.fullname}
+*DURATION :* ${apiResponse.data.duration}
+*VIEWS :* ${apiResponse.data.stats.views}
 
-📩 _Reply with the option number (e.g., "1") to proceed._`
-    }, { quoted: mek });
+*1.1 ║❯❯ No-Watermark-01*
+*1.2 ║❯❯ No-Watermark-SD*
+*1.3 ║❯❯ No-Watermark-HD*
+*1.4 ║❯❯ AUDIO DOWNLOAD*
+ 
+> 𝛲𝛩𝑊𝛯𝑅𝐷 𝐵𝑌 𝐂𝐇𝐀𝐌𝐈-𝐌𝐃
+`;
 
-    // Listener for selection
-    conn.ev.once('messages.upsert', async (msgUpdate) => {
-      const msg = msgUpdate.messages[0];
-      if (!msg.message || !msg.message.conversation) return;
+    const sentMessage = await bot.sendMessage(from, {
+      image: { url: apiResponse.data.cover || '' },
+      caption: downloadMessage,
+      contextInfo
+    }, { quoted: message });
 
-      const option = msg.message.conversation.trim();
+    bot.ev.on("messages.upsert", async (msgUpdate) => {
+      const receivedMessage = msgUpdate.messages[0];
 
-      switch (option) {
-        case '1':
-          await conn.sendMessage(from, {
-            video: { url: data.data.nowatermark },
-            mimetype: 'video/mp4',
-            caption: '🎞️ *No Watermark Video* — Powered by CHAMI-MD'
-          }, { quoted: msg });
-          break;
-        case '2':
-          await conn.sendMessage(from, {
-            video: { url: data.data.watermark },
-            mimetype: 'video/mp4',
-            caption: '🎞️ *Watermarked Video* — Powered by CHAMI-MD'
-          }, { quoted: msg });
-          break;
-        case '3':
-          await conn.sendMessage(from, {
-            audio: { url: data.data.music.url },
-            mimetype: 'audio/mpeg',
-            ptt: false
-          }, { quoted: msg });
-          break;
-        default:
-          reply("❌ වැරදි අංකයකි. කරුණාකර 1, 2 හෝ 3 ලෙස උත්තර දෙන්න.");
+      if (!receivedMessage.message || !receivedMessage.message.extendedTextMessage) {
+        return;
+      }
+
+      const userResponse = receivedMessage.message.extendedTextMessage.text.trim();
+
+      if (receivedMessage.message.extendedTextMessage.contextInfo &&
+          receivedMessage.message.extendedTextMessage.contextInfo.stanzaId === sentMessage.key.id) {
+        
+        switch (userResponse) {
+          case '1.1':
+            await bot.sendMessage(from, {
+              video: { url: apiResponse.data.data[0].url },
+              mimetype: "video/mp4",
+              caption: `*𝛭𝑅 𝘊𝘏𝘈𝘔𝘐*`,
+              contextInfo
+            }, { quoted: receivedMessage });
+            break;
+
+          case '1.2':
+            await bot.sendMessage(from, {
+              video: { url: apiResponse.data.data[1].url },
+              mimetype: "video/mp4",
+              caption: `*𝛭𝑅 𝘊𝘏𝘈𝘔𝘐*`,
+              contextInfo
+            }, { quoted: receivedMessage });
+            break;
+
+          case '1.3':
+            await bot.sendMessage(from, {
+              video: { url: apiResponse.data.data[2].url },
+              mimetype: "video/mp4",
+              caption: `*𝘔𝘙 𝘊𝘏𝘈𝘔𝘐*`,
+              contextInfo
+            }, { quoted: receivedMessage });
+            break;
+
+          case '1.4':
+            await bot.sendMessage(from, {
+              audio: { url: apiResponse.data.music_info.url },
+              mimetype: "audio/mpeg",
+              contextInfo
+            }, { quoted: receivedMessage });
+            break;
+
+          default:
+            await bot.sendMessage(from, {
+              text: " Invalid option. Please select a valid number."
+            }, { quoted: receivedMessage });
+            break;
+        }
       }
     });
 
-  } catch (e) {
-    console.log(e);
-    reply("❌ Unexpected error occurred while downloading TikTok video.");
+  } catch (error) {
+    console.error(error);
+    await reply(" Please try again later...*");
+    await bot.sendMessage(botNumber + "94766315540@s.whatsapp.net", {
+      text: ` Error Info:${error}`
+    }, { quoted: message });
   }
 });
