@@ -2,14 +2,17 @@ const { cmd } = require('../lib/command');
 const axios = require('axios');
 
 cmd({
-  pattern: "attp",
+  pattern: 'attp',
   desc: 'Make RGB animated sticker from text',
   category: 'fun',
   use: '.attp <text>',
   react: '🌈'
-}, async (m, command) => {
-  let text = command[1] || '';
-  if (!text.trim()) return m.reply('❗ Text ekak danna!\nEg: .attp Infinity');
+}, async (m, match, { client }) => {
+  const text = match[1]?.trim();
+
+  if (!text) {
+    return await client.sendMessage(m.chat, { text: '❗ Text ekak danna!\nEg: .attp CHAMI' }, { quoted: m });
+  }
 
   try {
     const response = await axios.get('https://api.infinityapi.org/rgb-animation', {
@@ -17,20 +20,20 @@ cmd({
         'Authorization': 'Bearer Infinity-manoj-x-mizta'
       },
       params: {
-        text,
+        text, // user typed text (ex: CHAMI)
         font: 'go3v2'
       },
       responseType: 'arraybuffer'
     });
 
     const buffer = Buffer.from(response.data);
-    await m.sendSticker(buffer, {
-      packname: "CHAMI-MD",
-      author: "ATT-Power"
-    });
+    await client.sendMessage(m.chat, {
+      sticker: buffer,
+      mimetype: 'image/webp'
+    }, { quoted: m });
 
   } catch (error) {
-    console.error(error);
-    m.reply('❌ Sticker hadanna bari una. Try later.');
+    console.error('❌ ATTP error:', error);
+    await client.sendMessage(m.chat, { text: '❌ Sticker hadanna bari una. Try later.' }, { quoted: m });
   }
 });
