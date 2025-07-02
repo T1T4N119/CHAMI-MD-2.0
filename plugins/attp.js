@@ -3,7 +3,7 @@ const axios = require('axios');
 const fs = require('fs');
 
 cmd({
-  pattern: 'attp ?(.*)',
+  pattern: "attp",
   desc: 'Make RGB animated sticker from text',
   category: 'fun',
   use: '.attp <text>',
