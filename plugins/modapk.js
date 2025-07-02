@@ -1,7 +1,6 @@
 const { cmd } = require('../lib/command')
 const axios = require('axios')
 const cheerio = require('cheerio')
-const { sendFileFromUrl } = require('../lib')
 
 cmd({
   pattern: "modapk",
