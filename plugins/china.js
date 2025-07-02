@@ -1,4 +1,4 @@
-const { cmd, commands } = require('../command')
+const { cmd, commands } = require('../lib/command')
 const { fetchJson } = require('../lib/functions');
 var cants = "I cant find this Image."
 
