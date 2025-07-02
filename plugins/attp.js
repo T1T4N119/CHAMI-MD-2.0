@@ -1,6 +1,5 @@
 const { cmd } = require('../lib/command');
 const axios = require('axios');
-const fs = require('fs');
 
 cmd({
   pattern: "attp",
@@ -9,8 +8,8 @@ cmd({
   use: '.attp <text>',
   react: '🌈'
 }, async (m, command) => {
-  let text = command.trim();
-  if (!text) return m.reply('❗ Text ekak danna!\nEg: .attp Infinity');
+  let text = command[1] || '';
+  if (!text.trim()) return m.reply('❗ Text ekak danna!\nEg: .attp Infinity');
 
   try {
     const response = await axios.get('https://api.infinityapi.org/rgb-animation', {
@@ -24,7 +23,7 @@ cmd({
       responseType: 'arraybuffer'
     });
 
-    const buffer = Buffer.from(response.data, 'utf-8');
+    const buffer = Buffer.from(response.data);
     await m.sendSticker(buffer, {
       packname: "CHAMI-MD",
       author: "ATT-Power"
