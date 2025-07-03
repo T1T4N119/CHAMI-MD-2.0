@@ -1,7 +1,7 @@
 const { cmd } = require('../lib/command');
 const fs = require('fs');
 const path = require('path');
-const settingsPath = path.join(__dirname, '../settings');
+const config = require('../settings');
 
 cmd({
     pattern: "antidelete",
