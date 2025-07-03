@@ -13,7 +13,7 @@ async (conn, mek, m, { reply, text, isCreator }) => {
     if (!isCreator) return reply("🛑 This command is only for the bot owner.");
 
     try {
-        const config = fs.readFileSync(settingsPath, 'utf8');
+        const config = fs.readFileSync(configPath, 'utf8');
         const match = config.match(/ANTI_DELETE\s*=\s*(true|false)/);
         const currentStatus = match ? match[1] === 'true' : false;
 
@@ -27,7 +27,7 @@ async (conn, mek, m, { reply, text, isCreator }) => {
 
         const newStatus = text.toLowerCase() === 'on';
         const updated = config.replace(/ANTI_DELETE\s*=\s*(true|false)/, `ANTI_DELETE = ${newStatus}`);
-        fs.writeFileSync(settingsPath, updated);
+        fs.writeFileSync(configPath, updated);
         reply(`✅ Anti-delete has been turned ${newStatus ? 'ON' : 'OFF'} successfully.`);
     } catch (err) {
         console.error("AntiDelete Toggle Error:", err);
