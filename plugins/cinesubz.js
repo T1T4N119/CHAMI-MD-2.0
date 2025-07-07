@@ -7,7 +7,6 @@ const fetch = require('node-fetch');
 var os = require('os')
 const { File } = require('megajs');
 const cinesubz = require('../lib/cinesubz')
-const { storenumrepdata } = require('../lib/nonbutton')
 function formatNumber(num) {
     return String(num).padStart(1, '0');
 } 
