@@ -956,28 +956,21 @@ events.commands.map(async (command) => {
 
 			    
         default:
-    if (isOwner && body.startsWith('$')) {
-        let bodyy = body.split('$')[1];
-        let code2 = bodyy.replace("°", ".toString()");
-        try {
-            let resultTest = await eval(code2);
-            if (typeof resultTest === "object") {
-                reply(util.format(resultTest));
-            } else {
-                reply(util.format(resultTest));
-            }
-        } catch (err) {
-            reply(util.format(err));
-        }
+  if (isOwner && body.startsWith('$')) {
+    let bodyy = body.split('$')[1];
+    let code2 = bodyy.replace("°", ".toString()");
+    try {
+      let resultTest = await eval(code2);
+      if (typeof resultTest === "object") {
+        reply(util.format(resultTest));
+      } else {
+        reply(util.format(resultTest));
+      }
+    } catch (err) {
+      reply(util.format(err));
     }
-    break;
-}
-} catch (e) {
-    const isError = String(e);
-    console.log(isError);
-}
-    })
-}
+  }
+  break;
 app.get("/", (req, res) => {
 res.send("📟 Chami-Md Working successfully!");
 });
