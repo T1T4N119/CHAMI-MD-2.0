@@ -10,7 +10,7 @@ cmd({
   react: "📥",
   filename: __filename
 }, async (bot, m, { args, reply }) => {
-  const url = args[0];
+  const url = args && args[0];
 
   if (!url || !url.includes("mega.nz")) {
     return reply("❌ *Please provide a valid MEGA.nz file link!*");
@@ -24,20 +24,30 @@ cmd({
       if (err) return reply("❌ Error loading MEGA file attributes.");
 
       const fileName = file.name || "mega_file";
-      const filePath = path.join(__dirname, "..", "temp", fileName);
+      const tempDir = path.join(__dirname, "..", "temp");
+
+      // temp folder එක 없으면 create කරන්න
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir);
+      }
+
+      const filePath = path.join(tempDir, fileName);
 
       file.download()
         .pipe(fs.createWriteStream(filePath))
         .on("finish", async () => {
           const data = fs.readFileSync(filePath);
-          const sendOpt = fileName.endsWith(".pdf")
-            ? { document: data, mimetype: 'application/pdf', fileName }
-            : { document: data, mimetype: "application/octet-stream", fileName };
+
+          const sendOpt = {
+            document: data,
+            mimetype: "application/octet-stream",
+            fileName: fileName
+          };
 
           await bot.sendMessage(m.chat, sendOpt, { quoted: m });
-          fs.unlinkSync(filePath); // delete after send
+          fs.unlinkSync(filePath);
         })
-        .on("error", async () => {
+        .on("error", () => {
           return reply("❌ Failed to download file.");
         });
     });
