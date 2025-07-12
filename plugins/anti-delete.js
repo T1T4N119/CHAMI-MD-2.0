@@ -1,36 +1,38 @@
-const { cmd } = require('../lib/command');
-const fs = require('fs');
-const path = require('path');
-const config = require('../settings');
+const { cmd } = require('../command');
+const { getAnti, setAnti } = require('../data/antidel');
 
 cmd({
     pattern: "antidelete",
+    alias: ['antidel', 'del'],
     desc: "Toggle anti-delete feature",
-    category: "settings",
+    category: "misc",
     filename: __filename
 },
-async (conn, mek, m, { reply, text, isCreator }) => {
-    if (!isCreator) return reply("🛑 This command is only for the bot owner.");
-
+async (conn, mek, m, { from, reply, text, isCreator }) => {
+    if (!isCreator) return reply('This command is only for the bot owner');
+    
     try {
-        const config = fs.readFileSync(configPath, 'utf8');
-        const match = config.match(/ANTI_DELETE\s*=\s*(true|false)/);
-        const currentStatus = match ? match[1] === 'true' : false;
-
-        if (!text || !['on', 'off', 'status'].includes(text.toLowerCase())) {
-            return reply(`*AntiDelete Status:* ${currentStatus ? '✅ ON' : '❌ OFF'}\n\nUsage:\n• .antidelete on\n• .antidelete off`);
+        const currentStatus = await getAnti();
+        
+        if (!text || text.toLowerCase() === 'status') {
+            return reply(`*AntiDelete Status:* ${currentStatus ? '✅ ON' : '❌ OFF'}\n\nUsage:\n• .antidelete on - Enable\n• .antidelete off - Disable`);
         }
-
-        if (text.toLowerCase() === 'status') {
-            return reply(`*AntiDelete Status:* ${currentStatus ? '✅ ON' : '❌ OFF'}`);
+        
+        const action = text.toLowerCase().trim();
+        
+        if (action === 'on') {
+            await setAnti(true);
+            return reply('✅ Anti-delete has been enabled');
+        } 
+        else if (action === 'off') {
+            await setAnti(false);
+            return reply('❌ Anti-delete has been disabled');
+        } 
+        else {
+            return reply('Invalid command. Usage:\n• .antidelete on\n• .antidelete off\n• .antidelete status');
         }
-
-        const newStatus = text.toLowerCase() === 'on';
-        const updated = config.replace(/ANTI_DELETE\s*=\s*(true|false)/, `ANTI_DELETE = ${newStatus}`);
-        fs.writeFileSync(configPath, updated);
-        reply(`✅ Anti-delete has been turned ${newStatus ? 'ON' : 'OFF'} successfully.`);
-    } catch (err) {
-        console.error("AntiDelete Toggle Error:", err);
-        reply("❌ Error updating AntiDelete status.");
+    } catch (e) {
+        console.error("Error in antidelete command:", e);
+        return reply("An error occurred while processing your request.");
     }
 });
