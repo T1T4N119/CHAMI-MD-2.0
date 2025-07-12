@@ -16,7 +16,5 @@ module.exports = {
     AUTO_STICKER: process.env.AUTO_STICKER || "true",
     AUTO_REPLY: process.env.AUTO_REPLY || "true",
     WEATHER_API_KEY: process.env.WEATHER_API_KEY || "9ad6e2bc255f629e9ff07569f0ad0af3",
-    ANTI_DELETE: process.env.ANTI_DELETE || "true"  
-    AUTO_TYPING: process.env.AUTO_TYPING || "true",
-    AUTO_RECORDING: process.env.AUTO_RECORDING || "false"
+    ANTI_DELETE: process.env.ANTI_DELETE || "true"      
 };
