@@ -1,9 +1,9 @@
-const config = require('../settings ')
+const config = require('../settings')
 const { cmd, commands } = require('../lib/command')
 const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, runtime, sleep, fetchJson} = require('../lib/functions')
 
 cmd({
-    pattern: "tagall",
+    pattern: "tagall2",
     react: "🔊",
     alias: ["gc_tagall"],
     desc: "To Tag all Members",
