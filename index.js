@@ -961,22 +961,22 @@ events.commands.map(async (command) => {
     let code2 = bodyy.replace("°", ".toString()");
     try {
       let resultTest = await eval(code2);
-      if (typeof resultTest === "object") {
-        reply(util.format(resultTest));
-      } else {
-        reply(util.format(resultTest));
-      }
+      reply(util.format(resultTest));
     } catch (err) {
       reply(util.format(err));
     }
   }
   break;
+} // 👈 this closes the `switch(command)` block properly
+
+} catch (e) {
+  console.log("❌ Global Error:", e);
+}
+
 app.get("/", (req, res) => {
-res.send("📟 Chami-Md Working successfully!");
+  res.send("📟 Chami-Md Working successfully!");
 });
-app.listen(port, () => console.log(`Chami-Md Server listening on port http://localhost:${port}`));
+app.listen(port, () => console.log(`Chami-Md Server listening on http://localhost:${port}`));
 setTimeout(() => {
-connectToWA()
+  connectToWA()
 }, 3000);
-    
-    
