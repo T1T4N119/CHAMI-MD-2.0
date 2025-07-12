@@ -955,24 +955,27 @@ events.commands.map(async (command) => {
         break
 
 			    
-        default:				
-        if (isOwner && body.startsWith('$')) {
-        let bodyy = body.split('$')[1]
+        default:
+    if (isOwner && body.startsWith('$')) {
+        let bodyy = body.split('$')[1];
         let code2 = bodyy.replace("°", ".toString()");
         try {
-        let resultTest = await eval(code2);l
-        if (typeof resultTest === "object") {
-        reply(util.format(resultTest));
-        } else {
-        reply(util.format(resultTest));
-        }
+            let resultTest = await eval(code2);
+            if (typeof resultTest === "object") {
+                reply(util.format(resultTest));
+            } else {
+                reply(util.format(resultTest));
+            }
         } catch (err) {
-        reply(util.format(err));
-        }}}
-        } catch (e) {
-            const isError = String(e)
-            console.log(isError)
+            reply(util.format(err));
         }
+    }
+    break;
+}
+} catch (e) {
+    const isError = String(e);
+    console.log(isError);
+}
     })
 }
 app.get("/", (req, res) => {
