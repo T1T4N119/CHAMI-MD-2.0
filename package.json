@@ -78,7 +78,7 @@
     "removebg-wrapper": "^1.0.3",
     "secktor-pack": "latest",
     "seedr": "latest",
-    "sequelize": "^6.28.0",
+    "sequelize": "^6.37.7",
     "sirasa-news": "latest",
     "softie-api": "^1.1.0",
     "sqlite3": "latest",
