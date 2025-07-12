@@ -1,4 +1,4 @@
-const { cmd } = require('../command');
+const { cmd } = require('../lib/command');
 const crypto = require('crypto');
 const webp = require('node-webpmux');
 const axios = require('axios');
