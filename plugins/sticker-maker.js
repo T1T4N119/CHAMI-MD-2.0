@@ -5,7 +5,7 @@ const axios = require('axios');
 const fs = require('fs-extra');
 const { exec } = require('child_process');
 const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
-const Config = require('../config');
+const Config = require('../settings');
 
 // Take Sticker 
 
