@@ -1,4 +1,4 @@
-const config = require('../settings ')
+const config = require('../settings')
 const axios = require('axios');
 const { cmd, commands } = require('../lib/command')
 const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, runtime, sleep, fetchJson} = require('../lib/functions')
