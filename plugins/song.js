@@ -3,7 +3,7 @@ const { ytsearch } = require('@dark-yasiya/yt-dl.js');
 const fetch = require('node-fetch');
 
 cmd({
-  pattern: "song",
+  pattern: "song2",
   react: "🎧",
   desc: "Download YouTube song",
   category: "download",
