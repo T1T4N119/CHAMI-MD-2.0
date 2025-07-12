@@ -78,7 +78,7 @@ const ownerNumber = config.OWNER_NUMBER
 //===================SESSION============================
 if (!fs.existsSync(__dirname + '/lib/session/creds.json')) {
     if (config.SESSION_ID) {
-      const sessdata = config.SESSION_ID.replace(" ")
+      const sessdata = config.SESSION_ID.replace("CHAMI-MD=")
       const filer = File.fromURL(`https://mega.nz/file/${sessdata}`)
       filer.download((err, data) => {
         if (err) throw err
@@ -147,7 +147,7 @@ text: "*👨‍💻 CHAMI MD 👨‍💻 successfully connected* ✓\n\n Use .Up
 contextInfo: {
 externalAdReply: {
 title: "👨‍💻 CHAMI MD 👨‍💻\nSuccessfully Connected !",	
-thumbnailUrl: "https://raw.githubusercontent.com/sayura19/Helper/refs/heads/main/file_00000000d0dc61f597f450261ecfe33f%20(1).png",
+thumbnailUrl: "https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg",
 sourceUrl: "",
 mediaType: 1,
 renderLargerThumbnail: true
@@ -322,17 +322,16 @@ conn.ev.on('messages.update', async(mes) => {
 //==================================================================	
 
     conn.ev.on('creds.update', saveCreds)
-    conn.ev.on('messages.upsert', async (mek) => {
-      try {
-    const { AntiDelete } = require('./lib/antidel'); // or './lib/antidelete-handler' based on file name
 
-    conn.ev.on('messages.delete', async (updates) => {
-  try {
-    await AntiDelete(conn, updates);
-  } catch (err) {
-    console.error("AntiDelete Error:", err);
-  }
-});     
+	
+    conn.ev.on('messages.update', async updates => {
+    for (const update of updates) {
+      if (update.update.message === null) {
+        console.log("Delete Detected:", JSON.stringify(update, null, 2));
+        await AntiDelete(conn, updates);
+      }
+    }
+  });
 	    mek = mek.messages[0]
             if (!mek.message) return
 	    var id_db = require('./lib/id_db')    
