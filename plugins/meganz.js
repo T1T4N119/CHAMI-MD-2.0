@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 cmd({
-  pattern: "mega ?(.*)",
+  pattern: "mega",
   desc: "Download files from MEGA.nz",
   category: "download",
   react: "📥",
