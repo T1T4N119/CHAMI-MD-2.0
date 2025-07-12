@@ -147,7 +147,7 @@ text: "*👨‍💻 CHAMI MD 👨‍💻 successfully connected* ✓\n\n Use .Up
 contextInfo: {
 externalAdReply: {
 title: "👨‍💻 CHAMI MD 👨‍💻\nSuccessfully Connected !",	
-thumbnailUrl: "https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg",
+thumbnailUrl: "https://raw.githubusercontent.com/sayura19/Helper/refs/heads/main/file_00000000d0dc61f597f450261ecfe33f%20(1).png",
 sourceUrl: "",
 mediaType: 1,
 renderLargerThumbnail: true
@@ -322,16 +322,17 @@ conn.ev.on('messages.update', async(mes) => {
 //==================================================================	
 
     conn.ev.on('creds.update', saveCreds)
+    conn.ev.on('messages.upsert', async (mek) => {
+      try {
+    const { AntiDelete } = require('./lib/antidel'); // or './lib/antidelete-handler' based on file name
 
-	
-    conn.ev.on('messages.update', async updates => {
-    for (const update of updates) {
-      if (update.update.message === null) {
-        console.log("Delete Detected:", JSON.stringify(update, null, 2));
-        await AntiDelete(conn, updates);
-      }
-    }
-  });
+    conn.ev.on('messages.delete', async (updates) => {
+  try {
+    await AntiDelete(conn, updates);
+  } catch (err) {
+    console.error("AntiDelete Error:", err);
+  }
+});     
 	    mek = mek.messages[0]
             if (!mek.message) return
 	    var id_db = require('./lib/id_db')    
@@ -955,28 +956,32 @@ events.commands.map(async (command) => {
         break
 
 			    
-        default:
-  if (isOwner && body.startsWith('$')) {
-    let bodyy = body.split('$')[1];
-    let code2 = bodyy.replace("°", ".toString()");
-    try {
-      let resultTest = await eval(code2);
-      reply(util.format(resultTest));
-    } catch (err) {
-      reply(util.format(err));
-    }
-  }
-  break;
-} // 👈 this closes the `switch(command)` block properly
-
-} catch (e) {
-  console.log("❌ Global Error:", e);
+        default:				
+        if (isOwner && body.startsWith('$')) {
+        let bodyy = body.split('$')[1]
+        let code2 = bodyy.replace("°", ".toString()");
+        try {
+        let resultTest = await eval(code2);l
+        if (typeof resultTest === "object") {
+        reply(util.format(resultTest));
+        } else {
+        reply(util.format(resultTest));
+        }
+        } catch (err) {
+        reply(util.format(err));
+        }}}
+        } catch (e) {
+            const isError = String(e)
+            console.log(isError)
+        }
+    })
 }
-
 app.get("/", (req, res) => {
-  res.send("📟 Chami-Md Working successfully!");
+res.send("📟 Chami-Md Working successfully!");
 });
-app.listen(port, () => console.log(`Chami-Md Server listening on http://localhost:${port}`));
+app.listen(port, () => console.log(`Chami-Md Server listening on port http://localhost:${port}`));
 setTimeout(() => {
-  connectToWA()
+connectToWA()
 }, 3000);
+    
+    
