@@ -47,8 +47,8 @@ cmd(
 
 cmd(
     {
-        pattern: 'sticker',
-        alias: ['s', 'stickergif'],
+        pattern: 'sticker2',
+        alias: ['s2', 'stickergif'],
         desc: 'Create a sticker from an image, video, or URL.',
         category: 'sticker',
         use: '<reply media or URL>',
