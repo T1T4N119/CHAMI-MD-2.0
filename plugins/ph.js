@@ -1,56 +1,112 @@
-const { cmd } = require('../lib/command');
-const axios = require('axios');
+const { fetchJson } = require("../lib/functions");
+const { downloadTiktok } = require("@mrnima/tiktok-downloader");
+const { facebook } = require("@mrnima/facebook-downloader");
+const cheerio = require("cheerio");
+const { igdl } = require("ruhend-scraper");
+const axios = require("axios");
+const { cmd, commands } = require('../lib/command');
+
+
+
 
 cmd({
-  pattern: 'pornhub',
-  desc: 'Download Pornhub video using link or search keyword',
-  category: 'nsfw',
-  react: '🔞',
-  use: '.pornhub <url or keyword>',
+  pattern: "porn",
+  alias: ["xvideos", "xporn","xvideo2"],
+  desc: "Search and download adult videos from XVideos",
+  category: "download",
   filename: __filename
-}, async (conn, m, msg, { from, reply, text }) => {
-  if (!text) return reply('❗ Please provide a Pornhub video URL or search keyword.\n\nUsage: .pornhub <url or keyword>');
-
+}, async (conn, m, store, { from, quoted, q, reply }) => {
   try {
-    let url = text.trim();
-
-    // If it's not a valid URL, treat it as a search keyword
-    if (!/^https?:\/\//i.test(url)) {
-      reply(`🔎 Searching Pornhub for: *${url}* ...`);
-
-      const searchApi = `https://lustapi.vercel.app/pornhub/search?query=${encodeURIComponent(url)}`;
-      const searchRes = await axios.get(searchApi);
-      const videos = searchRes.data?.results;
-
-      if (!videos || videos.length === 0) {
-        return reply('❌ No results found for your query.');
-      }
-
-      url = videos[0].videoUrl; // Get first result's video URL
-    }
-
-    // Call downloader API
-    const api = `https://phdl-ayo.vercel.app/api/phdl?url=${encodeURIComponent(url)}`;
-    const res = await axios.get(api);
-
-    if (!res.data || !res.data.result || res.data.result.length === 0) {
-      return reply('❌ No download link found.');
-    }
-
-    const { title, thumb, result } = res.data;
-
-    let caption = `🔞 *Pornhub Downloader*\n\n🎬 *Title:* ${title}\n\n📥 *Download Links:*\n`;
-    result.forEach((item, index) => {
-      caption += `\n${index + 1}. ${item.quality || 'Unknown'} - ${item.link}`;
-    });
+    if (!q) return reply("❌ Please enter a keyword. Example: .porn mia khalifa");
 
     await conn.sendMessage(from, {
-      image: { url: thumb || 'https://i.ibb.co/tqv2M6h/default-ph-thumb.jpg' },
-      caption
+      react: { text: '🔍', key: m.key }
+    });
+
+    // Search for video by keyword
+    const searchRes = await fetch(`https://apis-keith.vercel.app/search/searchxvideos?q=${encodeURIComponent(q)}`);
+    const searchData = await searchRes.json();
+
+    if (!searchData.status || !searchData.result || !searchData.result[0]) {
+      return reply("❌ No videos found for that keyword.");
+    }
+
+    const videoUrl = searchData.result[0].url;
+
+    // Download using Keith's API
+    const response = await fetch(`https://apis-keith.vercel.app/download/porn?url=${encodeURIComponent(videoUrl)}`);
+    const data = await response.json();
+
+    if (!data.status || !data.result) {
+      return reply("⚠️ Failed to retrieve video. Please try again.");
+    }
+
+    const { videoInfo, downloads } = data.result;
+    const { title, thumbnail, duration } = videoInfo;
+
+    const caption = `
+    
+╭──┥❍ *𝙲𝙷𝙰𝙼𝙸-𝙼𝙳* ❍├─ 
+┊
+┊▸ *ᴛɪᴛʟᴇ:* ${title}
+┊▸ *ᴅᴜʀᴀᴛɪᴏɴ:* _${Math.floor(duration / 60)} min ${duration % 60} sec_
+╰──
+
+📹 *ᴠɪᴅᴇᴏ ᴅʟ ᴏᴘᴛɪᴏɴs:*
+
+1 *Low Quality*
+2 *High Quality*
+
+📌 *Reply with the number to download your choice.*
+
+> ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝙲𝙷𝙰𝙼𝙸-𝙼𝙳
+
+`;
+
+    const sentMsg = await conn.sendMessage(from, {
+      image: { url: thumbnail },
+      caption: caption
     }, { quoted: m });
 
-  } catch (err) {
-    console.error(err);
-    reply('❌ Error occurred. The video may be private or the API failed.');
+    const messageID = sentMsg.key.id;
+
+    conn.ev.on("messages.upsert", async (msgData) => {
+      const receivedMsg = msgData.messages[0];
+      if (!receivedMsg.message) return;
+
+      const receivedText = receivedMsg.message.conversation || receivedMsg.message.extendedTextMessage?.text;
+      const senderID = receivedMsg.key.remoteJid;
+      const isReplyToBot = receivedMsg.message.extendedTextMessage?.contextInfo?.stanzaId === messageID;
+
+      if (isReplyToBot) {
+        await conn.sendMessage(senderID, {
+          react: { text: '⬇️', key: receivedMsg.key }
+        });
+
+        switch (receivedText) {
+          case "1":
+            await conn.sendMessage(senderID, {
+              video: { url: downloads.lowQuality },
+              caption: "📥 *Downloaded in Low Quality*"
+            }, { quoted: receivedMsg });
+            break;
+
+          case "2":
+            await conn.sendMessage(senderID, {
+              video: { url: downloads.highQuality },
+              caption: "📥 *Downloaded in High Quality*"
+            }, { quoted: receivedMsg });
+            break;
+
+
+          default:
+            reply("❌ Invalid option! Please reply with option 1 or 2.");
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error("Error:", error);
+    reply("❌ An error occurred while processing your request. Please try again.");
   }
 });
