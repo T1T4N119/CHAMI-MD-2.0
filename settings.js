@@ -17,7 +17,8 @@ module.exports = {
     AUTO_REPLY: process.env.AUTO_REPLY || "true",
     WEATHER_API_KEY: process.env.WEATHER_API_KEY || "9ad6e2bc255f629e9ff07569f0ad0af3",
     ANTI_DELETE: process.env.ANTI_DELETE || "true"
-    ANTI_BAD: process.env.ANTI_BAD || "false",
+    module.exports = {
+    ANTI_BAD: true,
     ALWAYS_ONLINE: process.env.ALWAYS_ONLINE || "false",
     AUTO_TYPING: process.env.AUTO_TYPING || "true",
     AUTO_RECORDING: process.env.AUTO_RECORDING || "false"
