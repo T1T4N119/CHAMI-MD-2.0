@@ -335,19 +335,15 @@ conn.ev.on('messages.update', async(mes) => {
 });     
 	    mek = mek.messages[0]
             if (!mek.message) return
-	    var id_db = require('./lib/id_db')
-mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_READ_STATUS === "true"){
-await conn.readMessages([mek.key])  
-const mnyako = await jidNormalizedUser(conn.user.id)
-await conn.sendMessage(mek.key.remoteJid, { react: { key: mek.key, text: '🧡'}}, { statusJidList: [mek.key.participant, mnyako] })
-}	      
-	    if (mek.key && mek.key.remoteJid === 'status@broadcast') return
+	    var id_db = require('./lib/id_db')    
+            mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
             const m = sms(conn, mek)
-	          var smg = m
+	    var smg = m
             const type = getContentType(mek.message)
             const content = JSON.stringify(mek.message)
             const from = mek.key.remoteJid
+            const quoted = type == 'extendedTextMessage' && mek.message.extendedTextMessage.contextInfo != null ? mek.message.extendedTextMessage.contextInfo.quotedMessage || [] : []
+
 
 //==================================Button================================
 	      
@@ -911,8 +907,6 @@ console.error("[PLUGIN ERROR] ", e);
     }
   }
 }
-let quoted = m.quoted || m.message?.extendedTextMessage?.contextInfo?.quotedMessage || null;
-
 events.commands.map(async (command) => {
   if (body && command.on === "body") {
     command.function(conn, mek, m, { from, prefix, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply , config, isCreator , isDev, botNumber2 });
