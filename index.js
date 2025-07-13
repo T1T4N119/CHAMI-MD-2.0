@@ -1002,9 +1002,12 @@ events.commands.map(async (command) => {
         } catch (err) {
         reply(util.format(err));
         }}}
-        } catch (e) {
-            const isError = String(e)
-            console.log(isError)
+     try {
+  command.function(conn, mek, m, { from, quoted }); // ✅ closing curly & bracket added
+} catch (e) {
+  const isError = String(e)
+  console.log(isError)
+}
         }
     })
 }
