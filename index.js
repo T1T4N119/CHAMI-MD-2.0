@@ -334,7 +334,7 @@ events.commands.map(async(command) => {
     }
   });	  
 	//=================================================//
-	 
+var id_db = require('./lib/id_db')	 
 conn.ev.on('messages.upsert', async(mek) => {
     mek = mek.messages[0]
     if (!mek.message) return
