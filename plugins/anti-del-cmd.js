@@ -4,7 +4,7 @@ const settingsPath = path.join(__dirname, "../settings.js");
 const { cmd } = require("../lib/command");
 
 cmd({
-  pattern: "antidelete ?(.*)",
+  pattern: "antidelete",
   desc: "Turn Anti-Delete on or off",
   category: "main",
   react: "🛡️",
