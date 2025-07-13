@@ -35,14 +35,14 @@ const frozenTheme = {
 cmd({
   pattern: "sinhalasub",
   react: "📽️",
-  desc: "Enjoy cinema from Frozen Queen's treasury of films with Sinhala subtitles",
+  desc: "Enjoy cinema from CHAMI-MD's treasury of films with Sinhala subtitles",
   category: "ice kingdom",
   filename: __filename,
 }, async (conn, mek, m, { from, q, pushname }) => {
   if (!q) {
     await conn.sendMessage(from, {
       text: frozenTheme.box("Royal Decree", 
-        "Usage: .movie <movie name>\nExample: .movie Deadpool\n❅ Vault: Films with Sinhala Subtitles\n Reply 'done' to stop"),
+        "Usage: .sinhalasub <movie name>\nExample: .sinhalasub Deadpool\n❅ Vault: Films with Sinhala Subtitles\n Reply 'done' to stop"),
       ...frozenTheme.getForwardProps()
     }, { quoted: mek });
     return;
@@ -114,8 +114,8 @@ cmd({
         conn.ev.off("messages.upsert", selectionHandler);
         downloadOptionsMap.clear();
         await conn.sendMessage(from, {
-          text: frozenTheme.box(" chamindu", 
-            " Cinematic quest ended!\nReturn to the Ice chamindu anytime"),
+          text: frozenTheme.box(" chami", 
+            " Cinematic quest ended!\nReturn to the Ice chami anytime"),
           ...frozenTheme.getForwardProps()
         }, { quoted: message });
         return;
@@ -128,7 +128,7 @@ cmd({
 
         if (!selectedFilm) {
           await conn.sendMessage(from, {
-            text: frozenTheme.box("Frozen Warning", 
+            text: frozenTheme.box("Warning", 
               "Invalid selection!\nChoose a movie number\nSnowgies are confused"),
             ...frozenTheme.getForwardProps()
           }, { quoted: message });
@@ -138,7 +138,7 @@ cmd({
         // Validate movie link
         if (!selectedFilm.link || !selectedFilm.link.startsWith('http')) {
           await conn.sendMessage(from, {
-            text: frozenTheme.box("Ice Warning", 
+            text: frozenTheme.box("Warning", 
               "Invalid movie link provided\nPlease select another movie"),
             ...frozenTheme.getForwardProps()
           }, { quoted: message });
@@ -217,7 +217,7 @@ cmd({
         });
         downloadOptions += `\n${frozenTheme.resultEmojis[8]} Select quality: Reply with the number\n`;
         downloadOptions += `${frozenTheme.resultEmojis[9]} Reply 'done' to stop\n`;
-        downloadOptions += `${frozenTheme.resultEmojis[9]} > *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ chamindu*`;
+        downloadOptions += `${frozenTheme.resultEmojis[9]} > *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴄʜᴀᴍɪ*`;
 
         const downloadMessage = await conn.sendMessage(from, {
           image: { url: movieDetails.image || "https://i.ibb.co/5Yb4VZy/snowflake.jpg" },
@@ -236,7 +236,7 @@ cmd({
 
         if (!selectedLink) {
           await conn.sendMessage(from, {
-            text: frozenTheme.box("Frozen Warning", 
+            text: frozenTheme.box("Warning", 
               " Invalid quality selection!\n Choose a quality number\n❅ Snowgies are confused"),
             ...frozenTheme.getForwardProps()
           }, { quoted: message });
@@ -254,7 +254,7 @@ cmd({
 
         if (sizeInGB > 2) {
           await conn.sendMessage(from, {
-            text: frozenTheme.box("Ice Warning", 
+            text: frozenTheme.box("Warning", 
               `Item too large (${selectedLink.size})!\n Direct download: ${selectedLink.url}\n Try a smaller quality`),
             ...frozenTheme.getForwardProps()
           }, { quoted: message });
@@ -275,7 +275,7 @@ cmd({
           await conn.sendMessage(from, { react: { text: frozenTheme.resultEmojis[0], key: message.key } });
         } catch (downloadError) {
           await conn.sendMessage(from, {
-            text: frozenTheme.box("Ice Warning", 
+            text: frozenTheme.box("Warning", 
               `❅ Download error: ${downloadError.message}\n❅ Direct download: ${selectedLink.url}\n❅ Try again`),
             ...frozenTheme.getForwardProps()
           }, { quoted: message });
@@ -290,7 +290,7 @@ cmd({
     console.error("Error:", e);
     await conn.sendMessage(from, {
       text: frozenTheme.box("Ice Storm", 
-        `Error: ${e.message || "chama Harpies destroyed the treasury"}\chama treasury closed\n Try again after the storm clears`),
+        `Error: ${e.message || "chami Harpies destroyed the treasury"}\chami treasury closed\n Try again after the storm clears`),
       ...frozenTheme.getForwardProps()
     }, { quoted: mek });
     await conn.sendMessage(from, { react: { text: "❌", key: mek.key } });
