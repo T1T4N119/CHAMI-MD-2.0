@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const config = require('../settings')
+const {readEnv} = require('/lib/database')
 const {cmd , commands} = require('../lib/command')
 
 //auto_voice
