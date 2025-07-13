@@ -357,7 +357,7 @@ await conn.sendMessage(mek.key.remoteJid, { react: { key: mek.key, text: '🧡'}
             if (!mek.message) return
 	    var id_db = require('./lib/id_db')    
             mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-            const m = sms(conn, mek)
+            const m2 = sms(conn, mek)
 	    var smg = m
             const type = getContentType(mek.message)
             const content = JSON.stringify(mek.message)
