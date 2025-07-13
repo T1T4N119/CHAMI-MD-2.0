@@ -1,75 +1,185 @@
-const { fetchJson } = require("../lib/functions");
-const { cmd } = require("../lib/command");
-const axios = require("axios");
+const { cmd } = require('../lib/command');
+const { fetchJson } = require('../lib/functions');
 
-const apilink = 'https://www.dark-yasiya-api.site';
+const apilink = 'https://www.dark-yasiya-api.site/'; 
 
 cmd({
-    pattern: "xvdl",
-    alias: ["xvdl", "xvdown"],
+    pattern: "xvideo2",
+    alias: ["xvdl2", "xnxx"],
     react: "🔞",
-    desc: "Download xvideo.com porn video",
+    desc: "Download videos from XVideo.com",
     category: "download",
-    use: '.xvdl <query>',
+    use: '.xvideo <search query>',
     filename: __filename
-}, async (conn, m, mek, { from, q, reply }) => {
+},
+async (conn, mek, m, { from, quoted, q, reply }) => {
     try {
-        if (!q) return await reply("❌ Please provide a search query!");
+        if (!q) return await reply("*Please provide a search query!*");
 
-        const xvList = await fetchJson(`${apilink}/search/xvideo?q=${q}`);
-        if (!xvList?.result?.length) return await reply("❌ No results found!");
+        // XVideo search
+        const xv_list = await fetchJson(`${apilink}/search/xvideo?text=${q}`);
+        if (!xv_list.result || xv_list.result.length === 0) return await reply("*No results found!*");
 
-        const xvData = await fetchJson(`${apilink}/download/xvideo?url=${xvList.result[0].url}`);
-        const res = xvData.result;
+        const videos = xv_list.result.slice(0, 30); // Limit to 30 results
 
-        let info = `🔞 *𝙓𝙑𝙞𝙙𝙚𝙤 𝙎𝙚𝙭 𝘿𝙤𝙬𝙣𝙡𝙤𝙖𝙙𝙚𝙧* 🔞\n\n` +
-            `📌 *Title:* ${res.title || "Unknown"}\n` +
-            `👁 *Views:* ${res.views || "Unknown"}\n` +
-            `👍 *Likes:* ${res.like || "Unknown"}\n` +
-            `👎 *Dislikes:* ${res.deslike || "Unknown"}\n` +
-            `📦 *Size:* ${res.size || "Unknown"}\n\n` +
-            `🔽 *Reply with your choice:*\n` +
-            `1️⃣ *Video File* 📹\n` +
-            `2️⃣ *Document File* 📁\n\n` +
-            `🔐 *Powered by gojo md*`;
+        // Prepare the list
+        let listText = `╭━━━〔 *𝙲𝙷𝙰𝙼𝙸-𝙼𝙳 XVIDEO* 〕━━━┈⊷
+┃▸╭───────────
+┃▸┃๏ *XVIDEO SEARCH RESULTS*
+┃▸└───────────···๏
+╰────────────────┈⊷\n\n🔢 *Please reply with the number of your choice*\n\n`;
+        videos.forEach((video, index) => {
+            listText += `🔢│➪ *[REPLY NUMBER ${index + 1} ]*\n\n`;
+            listText += `┏━❮🔞 𝙲𝙷𝙰𝙼𝙸-𝙼𝙳 DETAILS 🔞❯━\n`;
+            listText += `┃📽️ *Title*: ${video.title}\n`;
+            listText += `┃👁️ *Views*: ${video.views || 'N/A'}\n`;
+            listText += `┃🔗 *URL*: ${video.url}\n`;
+            listText += `┗━━━━━━━━━━━━━━𖣔𖣔\n\n`;
+        });
+        listText += `> *Please reply with the number of your choice*\n`;
+        listText += `> ㋛︎ ᴘᴏᴡᴇʀᴅ ʙʏ 𝙲𝙷𝙰𝙼𝙸-𝙼𝙳`;
 
-        const sentMsg = await conn.sendMessage(from, { image: { url: res.image }, caption: info }, { quoted: mek });
-        const messageID = sentMsg.key.id;
-        await conn.sendMessage(from, { react: { text: '📥', key: sentMsg.key } });
+        // Send the list
+        const sentMsg = await conn.sendMessage(from, {
+            image: { url: videos[0].image || 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' },
+            caption: listText,
+            contextInfo: {
+                forwardingScore: 999,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterName: '𝙲𝙷𝙰𝙼𝙸-𝙼𝙳',
+                    newsletterJid: "120363419906775942@newsletter",
+                    serverMessageId: 999
+                }
+            }
+        }, { quoted: mek });
 
-        conn.ev.on('messages.upsert', async (msgUp) => {
-            try {
-                const msgInfo = msgUp?.messages?.[0];
-                if (!msgInfo?.message) return;
+        const messageID = sentMsg.key.id; 
 
-                const userText = msgInfo.message?.conversation || msgInfo.message?.extendedTextMessage?.text;
-                const isReplyToOurMsg = msgInfo.message?.extendedTextMessage?.contextInfo?.stanzaId === messageID;
 
-                if (!isReplyToOurMsg) return;
+        const handleVideoSelection = async (messageUpdate) => {
+            const replyMek = messageUpdate.messages[0];
+            if (!replyMek.message) return;
 
-                let userReply = userText.trim();
+            const messageType = replyMek.message.conversation || replyMek.message.extendedTextMessage?.text;
+            const isReplyToSentMsg = replyMek.message.extendedTextMessage && replyMek.message.extendedTextMessage.contextInfo.stanzaId === messageID;
 
-                if (userReply === "1") {
-                    const sent = await conn.sendMessage(from, { text: "⏳ Downloading video..." }, { quoted: mek });
-                    await conn.sendMessage(from, { video: { url: res.dl_link }, mimetype: "video/mp4", caption: res.title }, { quoted: mek });
-                    await conn.sendMessage(from, { text: "✅ Video sent!\nPowered by gojo md", edit: sent.key });
-                } else if (userReply === "2") {
-                    const sent = await conn.sendMessage(from, { text: "⏳ Uploading document..." }, { quoted: mek });
-                    await conn.sendMessage(from, { document: { url: res.dl_link }, fileName: `${res.title}.mp4`, mimetype: "video/mp4", caption: res.title }, { quoted: mek });
-                    await conn.sendMessage(from, { text: "✅ Document sent!\nPowered by gojo md", edit: sent.key });
-                } else {
-                    await conn.sendMessage(from, { text: "❌ Invalid choice! Reply with 1 or 2", quoted: msgInfo });
+            if (isReplyToSentMsg) {
+                const choice = parseInt(messageType) - 1;
+                if (isNaN(choice) || choice < 0 || choice >= videos.length) {
+                    await conn.sendMessage(from, { text: "*Invalid number! Choose between 1-30.*" }, { quoted: replyMek });
+                    return;
                 }
 
-            } catch (err) {
-                console.error(err);
-                await reply(`❌ Error while handling reply: ${err.message}`);
-            }
-        });
+                const selectedVideo = videos[choice];
 
-    } catch (err) {
-        console.error(err);
-        await conn.sendMessage(from, { react: { text: '❌', key: mek.key } });
-        await reply(`❌ *An error occurred:* ${err.message}`);
+   
+                await conn.sendMessage(from, { react: { text: '⬇️', key: replyMek.key } });
+                const xv_info = await fetchJson(`${apilink}/download/xvideo?url=${selectedVideo.url}`);
+                if (!xv_info.result || !xv_info.result.dl_link) {
+                    await conn.sendMessage(from, { text: "*Failed to download! Try another video.*" }, { quoted: replyMek });
+                    return;
+                }
+
+                // Details message
+                const desc = `╭━━━〔 *𝙲𝙷𝙰𝙼𝙸-𝙼𝙳 XVIDEO* 〕━━━┈⊷
+┃▸╭───────────
+┃▸┃๏ *𝙲𝙷𝙰𝙼𝙸-𝙼𝙳 DOWNLOADER*
+┃▸└───────────···๯
+╰────────────────┈⊷
+┃📽️ *Title*: ${xv_info.result.title}
+┃👁️ *Views*: ${xv_info.result.views || 'N/A'}
+┃👍 *Likes*: ${xv_info.result.like || 'N/A'}
+┗━━━━━━━━━━━━━━𖣔𖣔
+╭━━〔🔢 *Reply Number*〕━━┈⊷
+┃◈╭─────────────·๏
+┃◈┃•1 | Download as Video 📽️
+┃◈┃•2 | Download as Document 📁
+┃◈└───────────┈⊷
+╰──────────────┈⊷
+> ㋛︎ ᴘᴏᴡᴇʀᴅ ʙʏ 𝙲𝙷𝙰𝙼𝙸-𝙼𝙳`;
+
+
+                const optionMsg = await conn.sendMessage(from, {
+                    image: { url: xv_info.result.image || 'https://raw.githubusercontent.com/Ubalasiya/Chamihelper/refs/heads/main/chami-md-main.jpg' },
+                    caption: desc,
+                    contextInfo: {
+                        forwardingScore: 999,
+                        isForwarded: true,
+                        forwardedNewsletterMessageInfo: {
+                            newsletterName: '𝙲𝙷𝙰𝙼𝙸-𝙼𝙳',
+                            newsletterJid: "120363419906775942@newsletter",
+                            serverMessageId: 999
+                        }
+                    }
+                }, { quoted: replyMek });
+
+                const optionMsgID = optionMsg.key.id;
+
+                // Handle second reply (download option selection)
+                const handleDownloadOption = async (optionUpdate) => {
+                    const optMek = optionUpdate.messages[0];
+                    if (!optMek.message) return;
+
+                    const optType = optMek.message.conversation || optMek.message.extendedTextMessage?.text;
+                    const isReplyToOptMsg = optMek.message.extendedTextMessage && optMek.message.extendedTextMessage.contextInfo.stanzaId === optionMsgID;
+
+                    if (isReplyToOptMsg) {
+                        await conn.sendMessage(from, { react: { text: '⬇️', key: optMek.key } });
+
+                        const caption = `🔞 *𝙲𝙷𝙰𝙼𝙸-𝙼𝙳 XVIDEO DOWNLOADER* 🔞\n\n📽️ *Title*: ${xv_info.result.title}\n> ㋛︎ ᴘᴏᴡᴇʀᴅ ʙʏ 𝙲𝙷𝙰𝙼𝙸-𝙼𝙳`;
+
+                        if (optType === '1') {
+
+                            await conn.sendMessage(from, {
+                                video: { url: xv_info.result.dl_link },
+                                mimetype: "video/mp4",
+                                caption: caption,
+                                contextInfo: {
+                                    externalAdReply: {
+                                        title: xv_info.result.title,
+                                        body: "𝙲𝙷𝙰𝙼𝙸-𝙼𝙳 XVideo",
+                                        mediaType: 2,
+                                        sourceUrl: selectedVideo.url,
+                                        thumbnailUrl: xv_info.result.image || "https://files.catbox.moe/lbde9t.jpg",
+                                        renderLargerThumbnail: true,
+                                        showAdAttribution: true
+                                    }
+                                }
+                            }, { quoted: optMek });
+                        } else if (optType === '2') {
+
+                            await conn.sendMessage(from, {
+                                document: { url: xv_info.result.dl_link },
+                                mimetype: "video/mp4",
+                                fileName: `${xv_info.result.title}.mp4`,
+                                caption: caption
+                            }, { quoted: optMek });
+                        } else {
+                            await conn.sendMessage(from, { text: "*Invalid choice! Choose 1 or 2.*" }, { quoted: optMek });
+                            return;
+                        }
+
+                        await conn.sendMessage(from, { react: { text: '✅', key: optMek.key } });
+
+
+                        conn.ev.off('messages.upsert', handleDownloadOption);
+                    }
+                };
+
+
+                conn.ev.on('messages.upsert', handleDownloadOption);
+
+
+                conn.ev.off('messages.upsert', handleVideoSelection);
+            }
+        };
+
+
+        conn.ev.on('messages.upsert', handleVideoSelection);
+
+    } catch (error) {
+        console.error(error);
+        await reply(`*An error occurred:* ${error.message || 'Unknown error'}`);
     }
 });
