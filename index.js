@@ -307,7 +307,8 @@ conn.ev.on('messages.update', async(mes) => {
                     //conn.sendMessage(botNumber, { text: JSON.stringify(pollMessage,null,2) } )
                     //conn.sendMessage(botNumber, { text: JSON.stringify(update?.pollUpdates,null,2) } )
                    
-                    //events.commands.map(async(command) => {
+                    //let quoted = mek.quoted || mek.message?.extendedTextMessage?.contextInfo?.quotedMessage || null;
+events.commands.map(async(command) => {
                       //  if (body && command.on === "poll") {
                         //command.function(conn, mes, m,{from, l,  body, isGroup, sender,  botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants,  isItzcp, groupAdmins, isBotAdmins, isAdmins, reply,react})
                         //}});
