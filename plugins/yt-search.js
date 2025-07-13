@@ -1,4 +1,4 @@
-const config = require('../settings)
+const config = require('../settings')
 const l = console.log
 const { cmd, commands } = require('../lib/command')
 const dl = require('@bochilteam/scraper')  
