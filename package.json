@@ -100,6 +100,7 @@
     "@dark-yasiya/yt-dl.js": "1.0.5",
     "@dark-yasiya/scrap": "1.0.1",
     "ruhend-scraper": "9.0.4",
-    "google-tts-api": "2.0.2"
+    "google-tts-api": "2.0.2",
+    "pdfkit": "0.17.1"
   }
 }
