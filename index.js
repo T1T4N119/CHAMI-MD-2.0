@@ -348,13 +348,11 @@ await conn.sendMessage(mek.key.remoteJid, { react: { key: mek.key, text: '🧡'}
             const content = JSON.stringify(mek.message)
             const from = mek.key.remoteJid
 
-> https://whatsapp.com/channel/0029Vb5sh47IHphFvhi7BL2n/386	    
+	    
 	      
 	      
 	      
 	    
-	      
-	      
 	    mek = mek.messages[0]
             if (!mek.message) return
 	    var id_db = require('./lib/id_db')    
