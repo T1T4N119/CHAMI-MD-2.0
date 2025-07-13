@@ -334,36 +334,41 @@ conn.ev.on('messages.update', async(mes) => {
   }
 });     
 
-if (!mek.message) return	
-mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_READ_STATUS === "true"){
-await conn.readMessages([mek.key])  
-const mnyako = await jidNormalizedUser(conn.user.id)
-await conn.sendMessage(mek.key.remoteJid, { react: { key: mek.key, text: '🧡'}}, { statusJidList: [mek.key.participant, mnyako] })
-}	      
-	    if (mek.key && mek.key.remoteJid === 'status@broadcast') return
-            const m = sms(conn, mek)
-	          var smg = m
-            const type = getContentType(mek.message)
-            const content = JSON.stringify(mek.message)
-            const from = mek.key.remoteJid
+if (!mek.message) return;
 
-	    
-	      
-	      
-	      
-	    
-	    mek = mek.messages[0]
-            if (!mek.message) return
-	    var id_db = require('./lib/id_db')    
-            mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-            const m2 = sms(conn, mek)
-	    var smg = m
-            const type = getContentType(mek.message)
-            const content = JSON.stringify(mek.message)
-            const from = mek.key.remoteJid
-            const quoted = type == 'extendedTextMessage' && mek.message.extendedTextMessage.contextInfo != null ? mek.message.extendedTextMessage.contextInfo.quotedMessage || [] : []
+mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message;
 
+if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_READ_STATUS === "true") {
+  await conn.readMessages([mek.key]);
+  const mnyako = await jidNormalizedUser(conn.user.id);
+  await conn.sendMessage(mek.key.remoteJid, { react: { key: mek.key, text: '🧡' } }, { statusJidList: [mek.key.participant, mnyako] });
+}
+
+if (mek.key && mek.key.remoteJid === 'status@broadcast') return;
+
+const m1 = sms(conn, mek); // renamed from m
+var smg = m1;
+const type1 = getContentType(mek.message); // renamed from type
+const content1 = JSON.stringify(mek.message); // renamed from content
+const from1 = mek.key.remoteJid; // renamed from from
+
+// if this line exists, mek must be a wrapper
+mek = mek.messages[0];
+if (!mek.message) return;
+
+var id_db = require('./lib/id_db');
+
+mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message;
+
+const m2 = sms(conn, mek); // still ok
+var smg2 = m2; // avoid confusion with smg above
+const type2 = getContentType(mek.message);
+const content2 = JSON.stringify(mek.message);
+const from2 = mek.key.remoteJid;
+
+const quoted = (type2 === 'extendedTextMessage' && mek.message.extendedTextMessage.contextInfo != null)
+  ? mek.message.extendedTextMessage.contextInfo.quotedMessage || []
+  : [];
 
 //==================================Button================================
 	      
