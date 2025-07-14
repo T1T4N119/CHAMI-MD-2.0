@@ -1,30 +1,39 @@
-const config = require("../settings");
-const { getContentType } = require("@whiskeysockets/baileys");
+const { cmd } = require('../lib/command');
+const { getAnti, setAnti } = require('../lib/antidel');
 
-module.exports = async function (bot) {
-  bot.ev.on("messages.update", async (updates) => {
-    for (const update of updates) {
-      if (
-        update.update.message === null &&
-        config.ANTI_DELETE &&
-        update.key &&
-        update.key.remoteJid &&
-        update.key.id &&
-        !update.key.fromMe
-      ) {
-        try {
-          const msg = await bot.store.loadMessage(update.key.remoteJid, update.key.id);
-          if (!msg || !msg.message) return;
-
-          const type = getContentType(msg.message);
-          await bot.sendMessage(update.key.remoteJid, {
-            text: `🚫 *Anti Delete*\n\n@${update.key.participant.split("@")[0]} deleted a message:\n\n🗂️ *Type:* ${type}`,
-            mentions: [update.key.participant],
-          }, { quoted: msg });
-        } catch (err) {
-          console.error("❌ Anti Delete Error:", err);
+cmd({
+    pattern: "antidelete",
+    alias: ['antidel', 'del'],
+    desc: "Toggle anti-delete feature",
+    category: "settings",
+    filename: __filename
+},
+async (conn, mek, m, { from, reply, text, isCreator }) => {
+    if (!isCreator) return reply('This command is only for the bot owner');
+    
+    try {
+        const currentStatus = await getAnti();
+        
+        if (!text || text.toLowerCase() === 'status') {
+            return reply(`*AntiDelete Status:* ${currentStatus ? '✅ ON' : '❌ OFF'}\n\nUsage:\n• .antidelete on - Enable\n• .antidelete off - Disable`);
         }
-      }
+        
+        const action = text.toLowerCase().trim();
+        
+        if (action === 'on') {
+            await setAnti(true);
+            return reply('✅ Anti-delete has been enabled');
+        } 
+        else if (action === 'off') {
+            await setAnti(false);
+            return reply('❌ Anti-delete has been disabled');
+        } 
+        else {
+            return reply('Invalid command. Usage:\n• .antidelete on\n• .antidelete off\n• .antidelete status');
+        }
+    } catch (e) {
+        console.error("Error in antidelete command:", e);
+        return reply("An error occurred while processing your request.");
     }
-  });
-};
+});
+;
