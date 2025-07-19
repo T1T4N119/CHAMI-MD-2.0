@@ -321,39 +321,52 @@ conn.ev.on('messages.update', async(mes) => {
 	
 //==================================================================	
 
-    conn.ev.on('creds.update', saveCreds)
-    conn.ev.on('messages.upsert', async(mek) => {
-    mek = mek.messages[0]
-    if (!mek.message) return
-    mek.message = (getContentType(mek.message) === 'ephemeralMessage') 
-    ? mek.message.ephemeralMessage.message 
+    conn.ev.on('creds.update', saveCreds);
+
+conn.ev.on('messages.upsert', async (mek) => {
+  const m = sms(conn, mek);
+  mek = mek.messages[0];
+  if (!mek.message) return;
+
+  mek.message = (getContentType(mek.message) === 'ephemeralMessage')
+    ? mek.message.ephemeralMessage.message
     : mek.message;
-    //console.log("New Message Detected:", JSON.stringify(mek, null, 2));
+
   if (config.READ_MESSAGE === 'true') {
     await conn.readMessages([mek.key]);  // Mark message as read
     console.log(`Marked message from ${mek.key.remoteJid} as read.`);
   }
-    if(mek.message.viewOnceMessageV2)
-    mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-    if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_STATUS_SEEN === "true"){
-      await conn.readMessages([mek.key])
-    }
-  if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_STATUS_REACT === "true"){
+
+  if (mek.message.viewOnceMessageV2)
+    mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message;
+
+  if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_STATUS_SEEN === "true") {
+    await conn.readMessages([mek.key]);
+  }
+
+  if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_STATUS_REACT === "true") {
     const jawadlike = await conn.decodeJid(conn.user.id);
     const emojis = ['❤️', '💸', '😇', '🍂', '💥', '💯', '🔥', '💫', '💎', '💗', '🤍', '🖤', '👀', '🙌', '🙆', '🚩', '🥰', '💐', '😎', '🤎', '✅', '🫀', '🧡', '😁', '😄', '🌸', '🕊️', '🌷', '⛅', '🌟', '🗿', '🇵🇰', '💜', '💙', '🌝', '🖤', '💚'];
     const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+
     await conn.sendMessage(mek.key.remoteJid, {
       react: {
         text: randomEmoji,
         key: mek.key,
       }
-	    const m = sms(conn, mek)
-	    var smg = m
-            const type = getContentType(mek.message)
-            const content = JSON.stringify(mek.message)
-            const from = mek.key.remoteJid
-            const quoted = type == 'extendedTextMessage' && mek.message.extendedTextMessage.contextInfo != null ? mek.message.extendedTextMessage.contextInfo.quotedMessage || [] : []
+    }); // <-- මෙහි } සහ ; අනිවාර්යයි
+  }
 
+  // මේ වෙනකොට await conn.sendMessage(...) block එක close වෙලා තියෙනවා
+
+  var smg = m;
+  const type = getContentType(mek.message);
+  const content = JSON.stringify(mek.message);
+  const from = mek.key.remoteJid;
+  const quoted = type === 'extendedTextMessage' && mek.message.extendedTextMessage.contextInfo != null
+    ? mek.message.extendedTextMessage.contextInfo.quotedMessage || []
+    : [];
+});
 
 //==================================Button================================
 	      
