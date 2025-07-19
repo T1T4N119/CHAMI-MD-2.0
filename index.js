@@ -347,8 +347,7 @@ conn.ev.on('messages.update', async(mes) => {
         text: randomEmoji,
         key: mek.key,
       }
-	    mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-            const m = sms(conn, mek)
+	    const m = sms(conn, mek)
 	    var smg = m
             const type = getContentType(mek.message)
             const content = JSON.stringify(mek.message)
