@@ -56,7 +56,7 @@ cmd({
         `💬 *Cᴏᴍᴍᴇɴᴛs*: ${metrics.comment_count}\n` +
         `🔁 *Sʜᴀʀᴇs*: ${metrics.share_count}\n` +
         `📥 *Doᴡɴʟᴏᴀᴅs*: ${metrics.download_count}\n\n` +
-        `> © ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝙳𝙰𝚁𝙺-𝙺𝙽𝙸𝙶𝙷𝚃-𝚇𝙼𝙳`,
+        `> © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴄʜᴀᴍɪ-ᴍᴅ`,
       contextInfo: {
         mentionedJid: [m.sender],
         forwardingScore: 999,
