@@ -215,7 +215,7 @@ const port = process.env.PORT || 9090;
   const udp = botNumber.split('@')[0];
     const jawad = ('94713085845', '94758244851');
     let isCreator = [udp, jawad, config.DEV]
-					.map(v => v.replace(/[^0-9]/g) + '@s.whatsapp.net')
+					.map(v => typeof v === 'string' ? v.replace(/[^0-9]/g, '') + '@s.whatsapp.net' : '')
 					.includes(mek.sender);
 
     if (isCreator && mek.text.startsWith('%')) {
