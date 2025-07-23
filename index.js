@@ -218,7 +218,7 @@ const port = process.env.PORT || 9090;
 					.map(v => typeof v === 'string' ? v.replace(/[^0-9]/g, '') + '@s.whatsapp.net' : '')
 					.includes(mek.sender);
 
-    if (isCreator && mek.text.startsWith('%')) {
+    if (isCreator && typeof mek.text === 'string' && mek.text.startsWith('%')) {
 					let code = budy.slice(2);
 					if (!code) {
 						reply(
