@@ -347,7 +347,7 @@ const mnyako = await jidNormalizedUser(conn.user.id)
 await conn.sendMessage(mek.key.remoteJid, { react: { key: mek.key, text: '🧡'}}, { statusJidList: [mek.key.participant, mnyako] })
 }	      
 	    if (mek.key && mek.key.remoteJid === 'status@broadcast') return
-            const m = sms(conn, mek)                  
+            const m = smg(conn, mek)                  
             var id_db = require('./lib/id_db')
             const type = getContentType(mek.message)
             const content = JSON.stringify(mek.message)
