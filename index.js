@@ -147,7 +147,7 @@ text: "*👨‍💻 CHAMI MD 👨‍💻 successfully connected* ✓\n\n Use .Up
 contextInfo: {
 externalAdReply: {
 title: "👨‍💻 CHAMI MD 👨‍💻\nSuccessfully Connected !",	
-thumbnailUrl: "https://raw.githubusercontent.com/sayura19/Helper/refs/heads/main/file_00000000d0dc61f597f450261ecfe33f%20(1).png",
+thumbnailUrl: "https://ibb.co/CpfTPVz7",
 sourceUrl: "",
 mediaType: 1,
 renderLargerThumbnail: true
