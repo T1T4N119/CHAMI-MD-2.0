@@ -147,7 +147,7 @@ text: "*👨‍💻 CHAMI MD 👨‍💻 successfully connected* ✓\n\n Use .Up
 contextInfo: {
 externalAdReply: {
 title: "👨‍💻 CHAMI MD 👨‍💻\nSuccessfully Connected !",	
-thumbnailUrl: "https://ibb.co/CpfTPVz7",
+thumbnailUrl: "https://raw.githubusercontent.com/sayura19/Helper/refs/heads/main/file_00000000d0dc61f597f450261ecfe33f%20(1).png",
 sourceUrl: "",
 mediaType: 1,
 renderLargerThumbnail: true
@@ -335,20 +335,10 @@ conn.ev.on('messages.update', async(mes) => {
 });     
 	    mek = mek.messages[0]
             if (!mek.message) return
+	    var id_db = require('./lib/id_db')    
             mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-
-
-//=====================AUTOStatusview==============//	    
-	     if (!mek.message) return	
-mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-if (mek.key && mek.key.remoteJid === 'status@broadcast' && config.AUTO_READ_STATUS === "true"){
-await conn.readMessages([mek.key])  
-const mnyako = await jidNormalizedUser(conn.user.id)
-await conn.sendMessage(mek.key.remoteJid, { react: { key: mek.key, text: '🧡'}}, { statusJidList: [mek.key.participant, mnyako] })
-}	      
-	    if (mek.key && mek.key.remoteJid === 'status@broadcast') return
-            const m = smg(conn, mek)                  
-            var id_db = require('./lib/id_db')
+            const m = sms(conn, mek)
+	    var smg = m
             const type = getContentType(mek.message)
             const content = JSON.stringify(mek.message)
             const from = mek.key.remoteJid
