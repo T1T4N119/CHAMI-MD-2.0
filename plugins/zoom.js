@@ -1,38 +1,56 @@
+const fetch = require('node-fetch');
 const { cmd } = require('../lib/command');
-const axios = require('axios');
 
 cmd({
-  pattern: 'zoom',
-  desc: 'Zoom video search and download',
-  category: 'search',
-  use: '<query>',
-  filename: __filename,
-  react: '🔍'
-}, async (message, match) => {
-  try {
-    if (!match) {
-      return await message.reply('🔍 *Please enter a search query!*\n\n_Example: .zoom kabir singh_');
+    pattern: "zoom",
+    desc: "Search and download movies from zoom.lk",
+    category: "movie",
+    react: "🎬"
+}, async (conn, mek, m, { text, reply }) => {
+    if (!text) return reply("🔍 Search keyword එකක් දෙන්න. Example: .zoom deadpool");
+
+    try {
+        // Search movies
+        let searchUrl = `https://zoom-lk-api.vercel.app/search?q=${encodeURIComponent(text)}`;
+        let res = await fetch(searchUrl);
+        let data = await res.json();
+
+        if (!data || data.length === 0) return reply("😔 Movie එකක් හමු නොවුණා.");
+
+        let msg = "🎬 *Zoom.lk Search Results:*\n\n";
+        data.forEach((movie, index) => {
+            msg += `${index + 1}. *${movie.title}*\n${movie.url}\n\n`;
+        });
+        msg += "_Reply with `.zoomdl <movie_url>` to download_";
+        reply(msg);
+
+    } catch (err) {
+        console.error(err);
+        reply("❌ Error searching movies.");
     }
+});
 
-    const apiUrl = `https://api.akuari.my.id/search/zoom?q=${encodeURIComponent(match)}`;
-    const res = await axios.get(apiUrl);
+cmd({
+    pattern: "zoomdl",
+    desc: "Download movie from zoom.lk",
+    category: "movie",
+    react: "⬇️"
+}, async (conn, mek, m, { text, reply }) => {
+    if (!text) return reply("📥 Movie page URL එකක් දෙන්න. Example: .zoomdl https://zoom.lk/...");
 
-    if (!res.data || !res.data.hasil || res.data.hasil.length === 0) {
-      return await message.reply('❌ No results found!');
+    try {
+        // Get download info
+        let dlUrl = `https://zoom-lk-api.vercel.app/dl?url=${encodeURIComponent(text)}`;
+        let res = await fetch(dlUrl);
+        let data = await res.json();
+
+        if (!data || !data.download) return reply("❌ Download link not found.");
+
+        let caption = `🎬 *${data.title}*\n📥 ${data.download}`;
+        reply(caption);
+
+    } catch (err) {
+        console.error(err);
+        reply("❌ Error fetching download link.");
     }
-
-    const results = res.data.hasil;
-    let caption = `🔎 *Zoom Search Results for:* \`${match}\`\n\n`;
-
-    results.slice(0, 5).forEach((video, i) => {
-      caption += `📼 *${i + 1}. ${video.title}*\n`;
-      caption += `📁 Size: ${video.size}\n`;
-      caption += `📥 [Download Link](${video.link})\n\n`;
-    });
-
-    await message.reply(caption);
-  } catch (e) {
-    console.error('[Zoom Plugin Error]', e);
-    await message.reply('❌ Error occurred while fetching zoom results.');
-  }
 });
