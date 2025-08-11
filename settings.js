@@ -16,5 +16,7 @@ module.exports = {
     AUTO_STICKER: process.env.AUTO_STICKER || "true",
     AUTO_REPLY: process.env.AUTO_REPLY || "true",
     WEATHER_API_KEY: process.env.WEATHER_API_KEY || "9ad6e2bc255f629e9ff07569f0ad0af3",
-    ANTI_DELETE: process.env.ANTI_DELETE || "true"      
+    ANTI_DELETE: process.env.ANTI_DELETE || "true",
+    FOOTER: process.env.FOOTER || "🎬✨𝐂𝐇𝐀𝐌𝐈 𝐌𝐎𝐕𝐈𝐄 𝐙𝐎𝐍𝐄🎬✨"
+    
 };
