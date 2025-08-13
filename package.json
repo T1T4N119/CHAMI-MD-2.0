@@ -31,7 +31,7 @@
     "btch-downloader": "^2.0.9",
     "caliph-api": "^1.0.0",
     "chatgpt-scraper": "^1.0.0",
-    "cheerio": "^1.0.0-rc.10",
+    "cheerio": "^1.0.0-rc.12",
     "cloudscraper": "4.6.0",
     "crypto": "latest",
     "discord-xp": "^1.1.16",
